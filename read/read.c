@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:51:01 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 16:54:33 by jinheo           ###   ########.fr       */
+/*   Updated: 2022/12/30 20:23:43 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	handle_input_line(char **commandline, char *prompt)
 		exit(0);
 	}
 	read_again = check_quote(newline);
+	if (read_again)
+		newline = ft_strjoin(newline, ft_strdup("\n"));
 	*commandline = ft_strjoin(*commandline, newline);
 	return (read_again);
 }

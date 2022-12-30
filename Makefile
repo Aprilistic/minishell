@@ -6,7 +6,7 @@
 #    By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 13:34:29 by jinheo            #+#    #+#              #
-#    Updated: 2022/12/30 16:53:06 by jinheo           ###   ########.fr        #
+#    Updated: 2022/12/30 19:47:39 by jinheo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = cc
 LDFLAGS	= -L$(shell brew --prefix readline)/lib
 CPPFLAGS = -I$(shell brew --prefix readline)/include
 
-SRCS	= main.c read/read.c read/read_commandline.c signal/signal.c
+SRCS	= main.c read/read.c read/read_commandline.c read/tokenize.c signal/signal.c
 OBJS	= $(SRCS:.c=.o)
 
 NAME	= minishell

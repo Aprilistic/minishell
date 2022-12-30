@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 18:40:37 by jinheo           ###   ########.fr       */
+/*   Updated: 2022/12/30 20:21:57 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_metadata
 /* read */
 int						handle_input_line(char **commandline, char *prompt);
 int						read_commandline(t_metadata **command, char **env);
-int						create_t_metadata(t_metadata **ptr);
+
+int						tokenize(char *commandline, t_metadata **command);
 
 /* signal */
 void					handler(int signum);
