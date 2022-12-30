@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 18:41:22 by jinheo           ###   ########.fr       */
+/*   Created: 2022/12/30 16:38:47 by jinheo            #+#    #+#             */
+/*   Updated: 2022/12/30 16:39:49 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	leaks(void)
+void	handler(int signum)
 {
-	system("leaks minishell");
-}
-
-int	main(int argc, char **argv, char **env)
-{
-	t_metadata	*command;
-
-	atexit(leaks);
-	signal(SIGINT, handler);
-	while (1)
-	{
-		//readline
-		command = NULL;
-		read_commandline(&command, env);
-
-		//parse
-
-		//execute
-
-		//retrieve_memory
-	}
-	return (0);
+	if (signum != SIGINT)
+		return ;
+	printf("\n");
+	if (rl_on_new_line() == -1)
+		exit(1);
+	rl_replace_line("", 1);
+	rl_redisplay();
 }
