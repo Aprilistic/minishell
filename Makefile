@@ -6,7 +6,7 @@
 #    By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 13:34:29 by jinheo            #+#    #+#              #
-#    Updated: 2022/12/30 19:47:39 by jinheo           ###   ########.fr        #
+#    Updated: 2022/12/31 13:06:00 by jinheo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ clean :
 fclean : 	
 			@make -C libft fclean
 			@make clean
-			@echo "Erasing exec files..."
+			@echo "Erasing exec file..."
 			@$(RM) $(NAME)
 
 re :
