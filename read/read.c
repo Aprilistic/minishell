@@ -6,13 +6,13 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:51:01 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 20:23:43 by jinheo           ###   ########.fr       */
+/*   Updated: 2022/12/31 20:50:06 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	check_quote(char *newline)
+static void	check_quote(char *newline, int *read_again)
 {
 	static int	single_quote;
 	static int	double_quote;
@@ -26,10 +26,29 @@ static int	check_quote(char *newline)
 		newline++;
 	}
 	if (double_quote || single_quote)
-		return (1);
+	{
+		*read_again |= 1;
+		return ;
+	}
 	double_quote = 0;
 	single_quote = 0;
-	return (0);
+	*read_again = 0;
+}
+
+static void	check_pipe(char *newline, int *read_again)
+{
+	int	index;
+
+	if (*read_again)
+		return ;
+	index = ft_strlen(newline) - 1;
+	while (index + 1 && ft_strchr(" \t\n", newline[index]))
+		index--;
+	if (index < 0)
+		return ;
+	if (newline[index] == '|' && !(ft_strchr(newline + index + 1, '\'')
+			|| ft_strchr(newline + index + 1, '\"')))
+		*read_again |= 2;
 }
 
 // 0 : input ended, 1 : single-quote, 2 : double-quote
@@ -38,6 +57,7 @@ int	handle_input_line(char **commandline, char *prompt)
 	char		*newline;
 	static int	read_again;
 
+	read_again = 0;
 	newline = readline(prompt);
 	if (newline == NULL)
 	{
@@ -52,7 +72,8 @@ int	handle_input_line(char **commandline, char *prompt)
 			printf("exit\n");
 		exit(0);
 	}
-	read_again = check_quote(newline);
+	check_quote(newline, &read_again);
+	check_pipe(newline, &read_again);
 	if (read_again)
 		newline = ft_strjoin(newline, ft_strdup("\n"));
 	*commandline = ft_strjoin(*commandline, newline);

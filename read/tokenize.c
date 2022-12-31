@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 20:22:02 by jinheo           ###   ########.fr       */
+/*   Updated: 2022/12/31 18:47:27 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,38 @@ void	get_token_count(char *commandline, t_metadata **command)
 	}
 }
 
+void	parse_token(char *commandline, t_metadata **command)
+{
+	int	command_index;
+	int	token_index;
+
+	command_index = 0;
+	token_index = 0;
+	while (1)
+	{
+		if (*commandline == '|' || *commandline == 0)
+		{
+			(*command)[command_index].token_count = token_index;
+			token_index = 0;
+			command_index++;
+			if (*commandline == 0)
+				break ;
+		}
+		else if (!ft_strchr(" \t\n", (int)*commandline))
+		{
+			commandline = skip_this_token(commandline);
+			token_index++;
+		}
+		commandline++;
+	}
+}
+
 int	tokenize(char *commandline, t_metadata **command)
 {
 	int	command_count;
 
 	command_count = get_command_count(commandline);
+	printf("cmd cnt  : %d\n", command_count);
 	*command = malloc(sizeof(t_metadata) * (command_count + 1));
 	if (*command == NULL)
 		return (ERROR);

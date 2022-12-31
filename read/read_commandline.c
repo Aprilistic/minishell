@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:45:06 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/30 19:52:42 by jinheo           ###   ########.fr       */
+/*   Updated: 2022/12/31 13:18:50 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ int	read_commandline(t_metadata **command, char **env)
 	while (1)
 	{
 		if (temp[idx].token == (void *)1)
-			break;
+			break ;
 		printf("cmd: %d, token_count: %d\n", idx, temp[idx].token_count);
 		idx++;
 	}
+	free(temp);
 	free(commandline);
 	return (0);
 }
