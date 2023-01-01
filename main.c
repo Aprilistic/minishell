@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 15:39:21 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 16:23:50 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	main(int argc, char **argv, char **env)
 	{
 		command = NULL;
 		parse_input(&command, env);
-		printf("chk\n");
 		check_command(&command);
 		//execute
 

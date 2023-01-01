@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 15:35:05 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 16:34:13 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,26 @@ static char	*skip_this_token(char *addr)
 		addr = ft_strchr(addr + 1, '\'');
 	else if (*addr == '\"')
 		addr = ft_strchr(addr + 1, '\"');
-	else if (!ft_strchr(" \t\n", (int)*addr))
+	else if (!ft_strchr("| \t\n", (int)*addr))
 	{
-		while (!ft_strchr(" \t\n", (int)*(addr++)))
+		while (!ft_strchr("| \t\n", (int)*(addr++)))
 			;
 		addr--;
 	}
 	return (addr);
 }
 
-static int	get_command_count(char *command)
+static int	get_command_count(char *commandline)
 {
 	int	command_count;
 
 	command_count = 1;
-	while (*command)
+	while (*commandline)
 	{
-		if (*command == '|')
+		if (*commandline == '|')
 			command_count++;
-		command = skip_this_token(command);
-		command++;
+		commandline = skip_this_token(commandline);
+		commandline++;
 	}
 	return (command_count);
 }
@@ -61,7 +61,7 @@ static void	get_token_count(char *commandline, t_metadata **command)
 			if (*commandline == 0)
 				break ;
 		}
-		else if (!ft_strchr(" \t\n", (int)*commandline))
+		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
 			commandline = skip_this_token(commandline);
 			token_count++;
@@ -80,12 +80,16 @@ static char	*get_token(char *addr, char **env)
 	token = (char *)malloc(token_size + 1);
 	ft_memcpy(token, addr, token_size);
 	token[token_size] = 0;
-	if (*token == '$')
-	{
+	if (*token == '\"')
+		temp = ft_strtrim(token, "\"");
+	else if (*token == '\'')
+		temp = ft_strtrim(token, "\'");
+	else if (*token == '$')
 		temp = get_value_from_environ(token + 1, env);
-		free(token);
-		token = temp;
-	}
+	else
+		return (token);
+	free(token);
+	token = temp;
 	return (token);
 }
 
