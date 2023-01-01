@@ -6,12 +6,13 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 16:34:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 16:49:09 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//begins at token, returns last address of token
 static char	*skip_this_token(char *addr)
 {
 	if (*addr == '\'')
@@ -20,8 +21,8 @@ static char	*skip_this_token(char *addr)
 		addr = ft_strchr(addr + 1, '\"');
 	else if (!ft_strchr("| \t\n", (int)*addr))
 	{
-		while (!ft_strchr("| \t\n", (int)*(addr++)))
-			;
+		while (!ft_strchr("| \t\n", (int)*(addr)))
+			addr++;
 		addr--;
 	}
 	return (addr);
@@ -111,7 +112,7 @@ static void	parse_token(char *commandline, t_metadata **command, char **env)
 			if (*commandline == 0)
 				break ;
 		}
-		else if (!ft_strchr(" \t\n", (int)*commandline))
+		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
 			(*command)[command_index].token[token_index]
 				= get_token(commandline, env);
