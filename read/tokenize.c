@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 14:09:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 15:35:05 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*skip_this_token(char *addr)
 	return (addr);
 }
 
-int	get_command_count(char *command)
+static int	get_command_count(char *command)
 {
 	int	command_count;
 
@@ -42,7 +42,7 @@ int	get_command_count(char *command)
 	return (command_count);
 }
 
-void	get_token_count(char *commandline, t_metadata **command)
+static void	get_token_count(char *commandline, t_metadata **command)
 {
 	int	command_num;
 	int	token_count;
@@ -70,7 +70,7 @@ void	get_token_count(char *commandline, t_metadata **command)
 	}
 }
 
-char	*get_token(char *addr, char **env)
+static char	*get_token(char *addr, char **env)
 {
 	char	*token;
 	int		token_size;
@@ -89,7 +89,7 @@ char	*get_token(char *addr, char **env)
 	return (token);
 }
 
-void	parse_token(char *commandline, t_metadata **command, char **env)
+static void	parse_token(char *commandline, t_metadata **command, char **env)
 {
 	int		command_index;
 	int		token_index;
@@ -123,11 +123,10 @@ int	tokenize(char *commandline, t_metadata **command, char **env)
 	int	command_count;
 
 	command_count = get_command_count(commandline);
-	printf("cmd cnt  : %d\n", command_count);
 	*command = malloc(sizeof(t_metadata) * (command_count + 1));
 	if (*command == NULL)
 		return (ERROR);
-	(*command)[command_count].token = (void *)1;
+	(*command)[command_count].token = NULL;
 	get_token_count(commandline, command);
 	parse_token(commandline, command, env);
 	return (0);

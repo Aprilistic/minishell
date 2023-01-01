@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 13:45:34 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 15:32:24 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,14 @@ typedef struct s_metadata
 }			t_metadata;
 
 /* read */
-int			handle_input_line(char **commandline, char *prompt);
-int			read_commandline(t_metadata **command, char **env);
-
+int			read_commandline(char **commandline);
 int			tokenize(char *commandline, t_metadata **command, char **env);
+int			parse_input(t_metadata **command, char **env);
 
 /* signal */
 void		handler(int signum);
 
 /* env */
-
 char		*get_value_from_environ(char *key, char **env);
 
 #endif
