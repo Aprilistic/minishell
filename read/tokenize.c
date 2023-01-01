@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: jinho <jinho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 19:33:37 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 23:50:17 by jinho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	allocate_token_slot(char *commandline, t_metadata **command)
 		{
 			(*command)[command_num].token_count = token_count;
 			(*command)[command_num].token
-				= (char **)malloc(sizeof(char *) * token_count);
+				= (char **)malloc(sizeof(char *) * (token_count + 1));
+			(*command)[command_num].token[token_count] = NULL;
 			token_count = 0;
 			command_num++;
 			if (*commandline == 0)

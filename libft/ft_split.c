@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: jinho <jinho@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 15:44:44 by jinheo            #+#    #+#             */
-/*   Updated: 2022/07/10 20:53:21 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 23:47:27 by jinho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,8 @@ static size_t	check_separator(char c, char now)
 
 static size_t	get_words_count(char const *s, char c)
 {
-	char	*target;
 	size_t	ret;
 
-	target = (char *)s;
 	ret = 0;
 	while (*s)
 	{
