@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 14:08:19 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 14:14:56 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,11 @@ char	*get_value_from_environ(char *key, char **env)
 	char	*value;
 	int		index;
 
-	printf("key input: %s\n", key);
 	index = search_from_environ(key, env);
 	if (index == ERROR)
 		value = ft_strdup("");
 	else
 		value = ft_strdup(ft_strchr(env[index], '=') + 1);
-	printf("value from env: %s\n", value);
 	return (value);
 }
 

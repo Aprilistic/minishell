@@ -6,14 +6,12 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:45:06 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 13:44:38 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 14:30:40 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//오류 처리 부분 규칙 정하기
-// 반환값으로 오류여부 처리(이중포인터 이용) or NULL으로 처리(객체 반환)
 int	read_commandline(t_metadata **command, char **env)
 {
 	char		*commandline;
@@ -36,11 +34,12 @@ int	read_commandline(t_metadata **command, char **env)
 		if (temp[idx].token == (void *)1)
 			break ;
 		printf("cmd: %d, token_count: %d\n", idx, temp[idx].token_count);
-		for (int i=0; i<temp[idx].token_count; ++i)
+		for (int i=0; i<=temp[idx].token_count; ++i)
 		{
 			printf("token %d: %s\n", i, temp[idx].token[i]);
 			free(temp[idx].token[i]);
 		}
+		free(temp[idx].token);
 		idx++;
 	}
 	free(temp);
