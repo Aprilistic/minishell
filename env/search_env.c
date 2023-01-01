@@ -6,21 +6,21 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/31 21:24:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 14:08:19 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //returns matching index from env
-static int	search_from_environ(char *token, int token_size, char **env)
+static int	search_from_environ(char *token, char **env)
 {
 	int	env_index;
 
 	env_index = 0;
 	while (env[env_index])
 	{
-		if (!ft_strncmp(env[env_index], token, token_size))
+		if (!ft_strncmp(env[env_index], token, ft_strlen(token)))
 			return (env_index);
 		env_index++;
 	}
@@ -30,12 +30,17 @@ static int	search_from_environ(char *token, int token_size, char **env)
 //returns matching value with allocated memory space.
 char	*get_value_from_environ(char *key, char **env)
 {
-	int	index;
+	char	*value;
+	int		index;
 
-	index = search_from_environ(key, ft_strlen(key), env);
+	printf("key input: %s\n", key);
+	index = search_from_environ(key, env);
 	if (index == ERROR)
-		return (ft_strdup(""));
-	return (ft_strdup(ft_strchr(env[index], '=') + 1));
+		value = ft_strdup("");
+	else
+		value = ft_strdup(ft_strchr(env[index], '=') + 1);
+	printf("value from env: %s\n", value);
+	return (value);
 }
 
 void	add_env_var(char *key, char *value, char **env)

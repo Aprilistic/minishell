@@ -33,12 +33,12 @@ $(NAME)	:
 			@${CC} ${CFLAGS} -c $< -o $@
 			
 clean :
-			@$(RM) $(OBJS)
 			@echo "Erasing .o files..."
+			@$(RM) $(OBJS)
 
 fclean :	clean
-			@$(RM) $(NAME)
 			@echo "Erasing lib file..."
+			@$(RM) $(NAME)
 
 re :		fclean
 			@make all

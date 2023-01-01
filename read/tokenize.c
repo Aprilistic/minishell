@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2022/12/31 18:47:27 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 14:09:12 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	get_token_count(char *commandline, t_metadata **command)
 		if (*commandline == '|' || *commandline == 0)
 		{
 			(*command)[command_num].token_count = token_count;
+			(*command)[command_num].token
+				= (char **)malloc(sizeof(char *) * token_count);
 			token_count = 0;
 			command_num++;
 			if (*commandline == 0)
@@ -68,10 +70,30 @@ void	get_token_count(char *commandline, t_metadata **command)
 	}
 }
 
-void	parse_token(char *commandline, t_metadata **command)
+char	*get_token(char *addr, char **env)
 {
-	int	command_index;
-	int	token_index;
+	char	*token;
+	int		token_size;
+	char	*temp;
+
+	token_size = skip_this_token(addr) - addr + 1;
+	token = (char *)malloc(token_size + 1);
+	ft_memcpy(token, addr, token_size);
+	token[token_size] = 0;
+	if (*token == '$')
+	{
+		temp = get_value_from_environ(token + 1, env);
+		free(token);
+		token = temp;
+	}
+	return (token);
+}
+
+void	parse_token(char *commandline, t_metadata **command, char **env)
+{
+	int		command_index;
+	int		token_index;
+	char	*parsed_token;
 
 	command_index = 0;
 	token_index = 0;
@@ -87,6 +109,8 @@ void	parse_token(char *commandline, t_metadata **command)
 		}
 		else if (!ft_strchr(" \t\n", (int)*commandline))
 		{
+			(*command)[command_index].token[token_index]
+				= get_token(commandline, env);
 			commandline = skip_this_token(commandline);
 			token_index++;
 		}
@@ -94,7 +118,7 @@ void	parse_token(char *commandline, t_metadata **command)
 	}
 }
 
-int	tokenize(char *commandline, t_metadata **command)
+int	tokenize(char *commandline, t_metadata **command, char **env)
 {
 	int	command_count;
 
@@ -105,5 +129,6 @@ int	tokenize(char *commandline, t_metadata **command)
 		return (ERROR);
 	(*command)[command_count].token = (void *)1;
 	get_token_count(commandline, command);
+	parse_token(commandline, command, env);
 	return (0);
 }
