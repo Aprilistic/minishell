@@ -6,14 +6,14 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 16:49:09 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 19:33:37 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 //begins at token, returns last address of token
-static char	*skip_this_token(char *addr)
+static char	*skip_current_token(char *addr)
 {
 	if (*addr == '\'')
 		addr = ft_strchr(addr + 1, '\'');
@@ -28,7 +28,7 @@ static char	*skip_this_token(char *addr)
 	return (addr);
 }
 
-static int	get_command_count(char *commandline)
+void	allocate_command_slot(char *commandline, t_metadata **command)
 {
 	int	command_count;
 
@@ -37,13 +37,14 @@ static int	get_command_count(char *commandline)
 	{
 		if (*commandline == '|')
 			command_count++;
-		commandline = skip_this_token(commandline);
+		commandline = skip_current_token(commandline);
 		commandline++;
 	}
-	return (command_count);
+	*command = malloc(sizeof(t_metadata) * (command_count + 1));
+	(*command)[command_count].token = NULL;
 }
 
-static void	get_token_count(char *commandline, t_metadata **command)
+void	allocate_token_slot(char *commandline, t_metadata **command)
 {
 	int	command_num;
 	int	token_count;
@@ -64,7 +65,7 @@ static void	get_token_count(char *commandline, t_metadata **command)
 		}
 		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
-			commandline = skip_this_token(commandline);
+			commandline = skip_current_token(commandline);
 			token_count++;
 		}
 		commandline++;
@@ -77,7 +78,7 @@ static char	*get_token(char *addr, char **env)
 	int		token_size;
 	char	*temp;
 
-	token_size = skip_this_token(addr) - addr + 1;
+	token_size = skip_current_token(addr) - addr + 1;
 	token = (char *)malloc(token_size + 1);
 	ft_memcpy(token, addr, token_size);
 	token[token_size] = 0;
@@ -94,7 +95,7 @@ static char	*get_token(char *addr, char **env)
 	return (token);
 }
 
-static void	parse_token(char *commandline, t_metadata **command, char **env)
+void	save_token(char *commandline, t_metadata **command, char **env)
 {
 	int		command_index;
 	int		token_index;
@@ -116,23 +117,9 @@ static void	parse_token(char *commandline, t_metadata **command, char **env)
 		{
 			(*command)[command_index].token[token_index]
 				= get_token(commandline, env);
-			commandline = skip_this_token(commandline);
+			commandline = skip_current_token(commandline);
 			token_index++;
 		}
 		commandline++;
 	}
-}
-
-int	tokenize(char *commandline, t_metadata **command, char **env)
-{
-	int	command_count;
-
-	command_count = get_command_count(commandline);
-	*command = malloc(sizeof(t_metadata) * (command_count + 1));
-	if (*command == NULL)
-		return (ERROR);
-	(*command)[command_count].token = NULL;
-	get_token_count(commandline, command);
-	parse_token(commandline, command, env);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:51:01 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 15:34:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/01 19:33:30 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	parse_input(t_metadata **command, char **env)
 	int		idx;
 
 	read_commandline(&commandline);
-	tokenize(commandline, command, env);
+	allocate_command_slot(commandline, command);
+	allocate_token_slot(commandline, command);
+	save_token(commandline, command, env);
 	free(commandline);
 	return (0);
 }
