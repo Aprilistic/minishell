@@ -6,25 +6,32 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 20:06:06 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/02 19:23:45 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft/libft.h"
-# include <stdio.h>
 # include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdio.h>
 # include <string.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
 
 # define ERROR -1
+
+typedef enum e_command_type
+{
+	builtin,
+	redirection,
+	systemcall
+}	t_command_type;
 
 typedef struct s_metadata
 {
