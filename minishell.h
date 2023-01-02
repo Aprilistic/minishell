@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 20:06:06 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/02 15:44:42 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@
 
 typedef struct s_metadata
 {
-	char	**token;
 	int		token_count;
+	char	**token;
+	int		*token_quote_flag;
 }			t_metadata;
 
 /* read */
