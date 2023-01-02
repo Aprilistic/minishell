@@ -35,8 +35,9 @@ typedef enum e_command_type
 
 typedef struct s_metadata
 {
-	char	**token;
 	int		token_count;
+	char	**token;
+	int		*token_quote_flag;
 }			t_metadata;
 
 /* read */
