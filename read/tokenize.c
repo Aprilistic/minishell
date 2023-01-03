@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 20:39:08 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/03 21:51:59 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	allocate_t_metadata(t_metadata *command, int token_count)
 {
 	command->token_count = token_count;
 	command->token = ft_calloc(token_count + 1, sizeof(char *));
+	command->token_quote_flag = ft_calloc(token_count, sizeof(int));
 	command->token_merge_flag = ft_calloc(token_count, sizeof(int));
 }
 
@@ -111,6 +112,8 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 		}
 		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
+			if (*commandline == '\'' || *commandline == '\"')
+				(*command)[command_index].token_quote_flag[token_index] = 1;
 			(*command)[command_index].token[token_index++]
 				= get_current_token(commandline, env);
 			commandline = skip_current_token(commandline);
