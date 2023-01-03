@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:39:14 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 22:36:56 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/03 22:51:20 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ static int	get_key_size(char *token)
 {
 	int	size;
 
-	if (token[0] != '$')
-		return (0);
 	if (token[1] == '?')
-		return (1);
+		return (2);
 	size = 1;
 	while (token[size] && !ft_strchr("$ \t\n", token[size]))
 		size++;
