@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 21:51:03 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/03 22:03:16 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,18 @@ char	*get_value_from_environ(char *key, char **env)
 	char	*value;
 	int		index;
 
-	index = search_from_environ(key, env);
-	if (key[0] == '?')
-		return (ft_itoa((unsigned short)exit_code));
-	else if (index == ERROR)
-		value = ft_strdup("");
+	if (key[0] == 0)
+		value = ft_strdup("$");
+	else if (key[0] == '?')
+		value = ft_itoa((unsigned short)exit_code);
 	else
-		value = ft_strdup(ft_strchr(env[index], '=') + 1);
+	{
+		index = search_from_environ(key + 1, env);
+		if (index == ERROR)
+			value = ft_strdup("");
+		else
+			value = ft_strdup(ft_strchr(env[index], '=') + 1);
+	}
 	return (value);
 }
 
