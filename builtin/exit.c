@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:33:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/02 15:04:32 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/03 13:55:29 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	ft_isspace(const char ch)
 
 static int	check_numeric_argument(char *str)
 {
-	size_t		checked_byte;
-	int			validity;
+	size_t	checked_byte;
+	int		validity;
 
 	checked_byte = 0;
 	while (ft_isspace(str[checked_byte]))
@@ -46,20 +46,25 @@ void	exit(t_metadata *command)
 {
 	int	exit_code;
 
+	exit_code = 0;
 	printf("exit\n");
 	if (command->token_count > 2)
 	{
 		write(STDERR_FILENO, "미니쉘: exit: too many arguments\n", 37);
 		exit_code = 2;
 	}
-	else if (!check_numeric_argument(command->token[1]))
+	else if (command->token_count == 2)
 	{
-		write(STDERR_FILENO, "미니쉘: exit: ", 18);
-		write(STDERR_FILENO, command->token[1], ft_strlen(command->token[1]));
-		write(STDERR_FILENO, ": numeric argument required\n", 27);
-		exit_code = 2;
+		if (!check_numeric_argument(command->token[1]))
+		{
+			write(STDERR_FILENO, "미니쉘: exit: ", 18);
+			write(STDERR_FILENO, command->token[1],
+				ft_strlen(command->token[1]));
+			write(STDERR_FILENO, ": numeric argument required\n", 27);
+			exit_code = 2;
+		}
+		else
+			exit_code = ft_atoi(command->token[1]);
 	}
-	else
-		exit_code = ft_atoi(command->token[1]);
 	exit(exit_code);
 }
