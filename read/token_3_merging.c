@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 12:55:30 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 17:07:48 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:41:13 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,19 @@ static int	*make_new_token_quote_flag(t_metadata *command)
 	int	new_index;
 	int	old_index;
 
-	ret = ft_calloc(get_new_token_count(command), sizeof(int));
+	ret = ft_calloc(get_new_token_count(command) + 1, sizeof(int));
 	new_index = 0;
 	old_index = 0;
 	tmp = command->token_quote_flag[old_index];
 	while (old_index < command->token_count)
 	{
-		if (!command->token_merge_flag[old_index])
+		tmp &= command->token_quote_flag[old_index];
+		if (command->token_merge_flag[old_index] == 0)
 		{
 			ret[new_index] = tmp;
-			tmp = command->token_quote_flag[old_index];
+			tmp = 1;
+			new_index++;
 		}
-		tmp &= command->token_quote_flag[old_index];
 		old_index++;
 	}
 	return (ret);
@@ -87,9 +88,9 @@ static void	update_token(t_metadata *command)
 	int		*new_quote;
 	int		new_token_count;
 
-	new_token = make_new_token(command);
-	new_quote = make_new_token_quote_flag(command);
 	new_token_count = get_new_token_count(command);
+	new_quote = make_new_token_quote_flag(command);
+	new_token = make_new_token(command);
 	free(command->token);
 	free(command->token_quote_flag);
 	command->token = new_token;
@@ -106,7 +107,6 @@ void	merge_token(t_metadata **command)
 	command_count = 0;
 	while ((*command)[command_count].token)
 		command_count++;
-	printf("cmd cnt: %d\n", command_count);
 	command_index = 0;
 	while (command_index < command_count)
 	{

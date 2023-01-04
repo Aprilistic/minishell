@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 17:14:49 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:22:12 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 			(*command)[command_index].token[token_index]
 				= get_current_token(commandline, env);
 			commandline = skip_current_token(commandline);
-			if (!ft_strchr(" \n\t|", *(commandline)))
+			if (!ft_strchr(" \n\t|", *(commandline + 1)))
 				(*command)[command_index].token_merge_flag[token_index] = 1;
 			token_index++;
 		}
