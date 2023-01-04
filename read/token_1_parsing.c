@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 17:22:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 19:47:06 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static char	*get_current_token(char *addr, char **env)
 	token = (char *)malloc(token_size + 1);
 	ft_memcpy(token, addr, token_size);
 	token[token_size] = 0;
-	trim_quote(&token);
 	replace_env_variable(&token, env);
+	trim_quote(&token);
 	return (token);
 }
 
