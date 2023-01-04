@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 13:26:43 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 14:51:53 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void		merge_token(t_metadata **command);
 /* token relative functions */
 char		*skip_current_token(char *addr);
 void		allocate_command_slot(char *commandline, t_metadata **command);
+void		allocate_t_metadata(t_metadata *command, int token_count);
 void		allocate_token_slot(char *commandline, t_metadata **command);
 void		replace_env_variable(char **token, char **env);
 

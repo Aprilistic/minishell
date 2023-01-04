@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 13:05:23 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 14:51:38 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	allocate_command_slot(char *commandline, t_metadata **command)
 	(*command)[command_count].token = NULL;
 }
 
-static void	allocate_t_metadata(t_metadata *command, int token_count)
+void	allocate_t_metadata(t_metadata *command, int token_count)
 {
 	command->token_count = token_count;
 	command->token = ft_calloc(token_count + 1, sizeof(char *));

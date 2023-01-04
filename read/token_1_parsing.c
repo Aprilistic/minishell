@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 13:52:42 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:14:49 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,15 @@ static char	*get_current_token(char *addr, char **env)
 	return (token);
 }
 
-static void	count_token(t_metadata **command,
+static int	count_token(char *commandline, t_metadata **command,
 	int *command_index, int *token_index)
 {
 	(*command)[*command_index].token_count = *token_index;
 	*token_index = 0;
 	(*command_index)++;
+	if (*commandline == 0)
+		return (1);
+	return (0);
 }
 
 void	save_token(char *commandline, t_metadata **command, char **env)
@@ -62,8 +65,7 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 	{
 		if (*commandline == '|' || *commandline == 0)
 		{
-			count_token(command, &command_index, &token_index);
-			if (*commandline == 0)
+			if (count_token(commandline, command, &command_index, &token_index))
 				break ;
 		}
 		else if (!ft_strchr("| \t\n", (int)*commandline))
@@ -72,10 +74,11 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 				(*command)[command_index].token_quote_flag[token_index] = 1;
 			(*command)[command_index].token[token_index]
 				= get_current_token(commandline, env);
-			commandline = skip_current_token(commandline) + 1;
+			commandline = skip_current_token(commandline);
 			if (!ft_strchr(" \n\t|", *(commandline)))
 				(*command)[command_index].token_merge_flag[token_index] = 1;
 			token_index++;
 		}
+		commandline++;
 	}
 }
