@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 22:31:38 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 13:13:49 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	check_command(t_metadata **command)
 	{
 		printf("cmd: %d, token_count: %d\n", command_index, (*command)[command_index].token_count);
 		for (int i = 0; i < (*command)[command_index].token_count; ++i)
-			printf("token %d: %s%s\n", i, (*command)[command_index].token[i], (*command)[command_index].token_quote_flag[i] ? "(Quoted)" : "");
+			printf("token %d: %s%s%s\n", i,
+				(*command)[command_index].token[i],
+				(*command)[command_index].token_quote_flag[i] ? "(Quoted)" : "",
+				(*command)[command_index].token_merge_flag[i] ? "(To be merged)" : "");
 		command_index++;
 	}
 }

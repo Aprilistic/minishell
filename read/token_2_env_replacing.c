@@ -1,34 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_modification.c                               :+:      :+:    :+:   */
+/*   token_2_env_replacing.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:39:14 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 22:51:20 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 13:06:18 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-//char *commandline, t_metadata *command
-
-void	trim_quote(char **token)
-{
-	char	*current_token;
-	char	*replacement;
-	char	quote[2];
-
-	quote[0] = 0;
-	quote[1] = 0;
-	current_token = *token;
-	if (current_token[0] == '\'' || current_token[0] == '\"')
-		quote[0] = current_token[0];
-	replacement = ft_strtrim(current_token, quote);
-	free(current_token);
-	*token = replacement;
-}
 
 static int	get_prefix_size(char *token)
 {

@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 21:42:35 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 13:26:43 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,14 @@ typedef struct s_metadata
 
 /* read */
 int			read_commandline(char **commandline);
+int			parse_input(t_metadata **command, char **env);
+void		save_token(char *commandline, t_metadata **command, char **env);
+void		merge_token(t_metadata **command);
 
+/* token relative functions */
 char		*skip_current_token(char *addr);
-
 void		allocate_command_slot(char *commandline, t_metadata **command);
 void		allocate_token_slot(char *commandline, t_metadata **command);
-void		save_token(char *commandline, t_metadata **command, char **env);
-int			parse_input(t_metadata **command, char **env);
-
-void		trim_quote(char **token);
 void		replace_env_variable(char **token, char **env);
 
 /* signal */

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   token_0_allocation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 22:30:50 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/04 13:05:23 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,50 +73,6 @@ void	allocate_token_slot(char *commandline, t_metadata **command)
 		{
 			commandline = skip_current_token(commandline);
 			token_index++;
-		}
-		commandline++;
-	}
-}
-
-static char	*get_current_token(char *addr, char **env)
-{
-	char	*token;
-	int		token_size;
-	char	*temp;
-
-	token_size = skip_current_token(addr) - addr + 1;
-	token = (char *)malloc(token_size + 1);
-	ft_memcpy(token, addr, token_size);
-	token[token_size] = 0;
-	trim_quote(&token);
-	replace_env_variable(&token, env);
-	return (token);
-}
-
-void	save_token(char *commandline, t_metadata **command, char **env)
-{
-	int		command_index;
-	int		token_index;
-
-	command_index = 0;
-	token_index = 0;
-	while (1)
-	{
-		if (*commandline == '|' || *commandline == 0)
-		{
-			(*command)[command_index].token_count = token_index;
-			token_index = 0;
-			command_index++;
-			if (*commandline == 0)
-				break ;
-		}
-		else if (!ft_strchr("| \t\n", (int)*commandline))
-		{
-			if (*commandline == '\'' || *commandline == '\"')
-				(*command)[command_index].token_quote_flag[token_index] = 1;
-			(*command)[command_index].token[token_index++]
-				= get_current_token(commandline, env);
-			commandline = skip_current_token(commandline);
 		}
 		commandline++;
 	}
