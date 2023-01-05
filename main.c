@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 20:06:20 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:05:09 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ int	main(int argc, char **argv, char **env)
 	t_metadata	*command;
 
 	atexit(&leaks);
+	//argv control(error check) is needed
+	if (argc != 1)
+	{
+		write(STDERR_FILENO, "Seriously? We don't need argv. Au Revoir\n", 42);
+		return (2);
+	}
 	signal(SIGINT, handler);
 	while (1)
 	{
