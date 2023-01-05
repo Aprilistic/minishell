@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 19:53:09 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 20:06:20 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,23 @@ void	check_command(t_metadata **command)
 	while ((*command)[command_index].token)
 	{
 		printf("cmd: %d, token_count: %d\n", command_index, (*command)[command_index].token_count);
-		for (int i = 0; i < (*command)[command_index].token_count; ++i)
-			printf("token %d: %s%s\n", i,
-				(*command)[command_index].token[i],
-				(*command)[command_index].token_quote_flag[i] ? "(Quoted)" : "");
+		for (int i = 0; i < (*command)[command_index].token_count; ++i){
+			printf("token %d: %s", i,(*command)[command_index].token[i]);
+			switch ((*command)[command_index].token_quote_flag[i])
+			{
+				case 1:
+					printf("(Single quoted)\n");
+				break ;
+				case 2:
+					printf("(Double quoted)\n");
+				break ;
+				default:
+					printf("\n");
+				break;
+			}
+			if ((*command)[command_index].token_quote_flag[i] == 1)
+				printf("");
+		}
 		command_index++;
 	}
 }

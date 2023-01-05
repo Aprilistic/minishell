@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 14:00:18 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 20:06:13 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ static void	trim_quote(char **token)
 	*token = replacement;
 }
 
-static char	*get_current_token(char *addr, char **env)
+static char	*get_current_token(char *addr, char **env, int quote_flag)
 {
 	char	*token;
 	int		token_size;
 	char	*temp;
 
 	token_size = skip_current_token(addr) - addr + 1;
-	token = (char *)malloc(token_size + 1);
+	token = ft_calloc(sizeof(char), token_size + 1);
 	ft_memcpy(token, addr, token_size);
-	token[token_size] = 0;
-	replace_env_variable(&token, env);
+	if (quote_flag != 1)
+		replace_env_variable(&token, env);
 	trim_quote(&token);
 	return (token);
 }
@@ -52,6 +52,18 @@ static int	count_token(char *commandline, t_metadata **command,
 	if (*commandline == 0)
 		return (1);
 	return (0);
+}
+
+static int	check_quote(char *commandline)
+{
+	int	ret;
+
+	ret = 0;
+	if (*commandline == '\'')
+		ret = 1;
+	else if (*commandline == '\"')
+		ret = 2;
+	return (ret);
 }
 
 void	save_token(char *commandline, t_metadata **command, char **env)
@@ -70,10 +82,10 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 		}
 		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
-			if (*commandline == '\'' || *commandline == '\"')
-				(*command)[command_index].token_quote_flag[token_index] = 1;
+			(*command)[command_index].token_quote_flag[token_index]
+				= check_quote(commandline);
 			(*command)[command_index].token[token_index]
-				= get_current_token(commandline, env);
+				= get_current_token(commandline, env, check_quote(commandline));
 			commandline = skip_current_token(commandline);
 			if (!ft_strchr(" \n\t|", *(commandline + 1)))
 				(*command)[command_index].token_merge_flag[token_index] = 1;

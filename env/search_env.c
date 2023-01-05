@@ -6,25 +6,50 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 22:43:56 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:46:38 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+static char	*get_key_from_environ(int index, char **env)
+{
+	char	*key;
+	int		key_size;
+
+	if (ft_strchr(env[index], '=') == NULL)
+		key = ft_strdup(env[index]);
+	else
+	{
+		key_size = ft_strchr(env[index], '=') - env[index];
+		key = ft_calloc(sizeof(char), key_size + 1);
+		key = ft_memcpy(key, env[index], key_size);
+	}
+	return (key);
+}
+
 //returns matching index from env
 static int	search_from_environ(char *token, char **env)
 {
-	int	env_index;
+	char	*key;
+	int		env_index;
+	int		ret;
 
 	env_index = 0;
+	ret = ERROR;
 	while (env[env_index])
 	{
-		if (!ft_strncmp(env[env_index], token, ft_strlen(token)))
-			return (env_index);
+		key = get_key_from_environ(env_index, env);
+		if (!ft_strcmp(key, token))
+		{
+			free(key);
+			ret = env_index;
+			break ;
+		}
+		free(key);
 		env_index++;
 	}
-	return (ERROR);
+	return (ret);
 }
 
 //returns matching value with allocated memory space.

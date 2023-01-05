@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 12:55:30 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 17:42:39 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 20:05:51 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	*make_new_token_quote_flag(t_metadata *command)
 		if (command->token_merge_flag[old_index] == 0)
 		{
 			ret[new_index] = tmp;
-			tmp = 1;
+			tmp = 3;
 			new_index++;
 		}
 		old_index++;
