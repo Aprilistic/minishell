@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:39:14 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 19:31:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 20:58:10 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static int	get_key_size(char *token)
 		return (2);
 	size = 1;
 	while (token[size] && !ft_strchr("$ \t\n\'\"", token[size]))
-		size++;
+	{
+		if (ft_isdigit(token[size++]))
+			break ;
+	}
 	return (size);
 }
 
