@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:33:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 20:39:47 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:06:23 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,5 @@ void	builtin_exit(t_metadata *command)
 		else
 			ret = ft_atoi(command->token[1]);
 	}
-	exit_code = ret;
 	exit(ret);
 }

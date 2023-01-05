@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 21:41:05 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:07:28 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ char		*get_key_from_environ(int index, char **env);
 char		*get_value_from_environ(char *key, char **env);
 
 /* builtin */
-int			builtin_echo(t_metadata *command);
+void		builtin_echo(t_metadata *command);
+void		builtin_env(char **env);
+void		builtin_exit(t_metadata *command);
+void		builtin_export(t_metadata *command, char **env);
+void		builtin_pwd(char **env);
+
+void		print_sorted_env(char **env);
 
 #endif

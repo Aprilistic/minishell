@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 15:49:39 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 20:38:18 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 22:13:49 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	check_no_nl(char *token)
 	return (ret);
 }
 
-int	builtin_echo(t_metadata *command)
+void	builtin_echo(t_metadata *command)
 {
 	int	no_nl;
 	int	index;
@@ -52,10 +52,11 @@ int	builtin_echo(t_metadata *command)
 	while (index < command->token_count)
 	{
 		printf("%s", command->token[index]);
+		if (index != command->token_count)
+			printf(" ");
 		index++;
 	}
 	if (!no_nl)
 		printf("\n");
-	exit_code = 0;
-	return (0);
+	exit(0);
 }
