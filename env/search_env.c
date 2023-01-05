@@ -6,13 +6,13 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 19:46:38 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:40:19 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*get_key_from_environ(int index, char **env)
+char	*get_key_from_environ(int index, char **env)
 {
 	char	*key;
 	int		key_size;

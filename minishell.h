@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 14:51:53 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/05 21:41:05 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void		replace_env_variable(char **token, char **env);
 void		handler(int signum);
 
 /* env */
+char		*get_key_from_environ(int index, char **env);
 char		*get_value_from_environ(char *key, char **env);
 
 /* builtin */
