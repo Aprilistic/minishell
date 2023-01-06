@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/03 20:40:35 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 11:21:16 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	deal_with_heredoc(t_metadata *cmd, int idx)
 	char	*line;
 	char	*limiter;
 
+	if (access(HEREDOC_FILE, R_OK) == -1)
+		unlink(HEREDOC_FILE);
 	fd = open(HEREDOC_FILE, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
 		return (perror(""));
@@ -99,9 +101,11 @@ void	deal_with_redirection(t_metadata *cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd->token[i])
+	i = -1;
+	while (++i < cmd->token_count)
 	{
+		if (cmd->token[i] == NULL)
+			continue ;
 		if (!ft_strcmp(cmd->token[i], ">"))
 			deal_with_output(cmd, i);
 		if (!ft_strcmp(cmd->token[i], ">>"))
@@ -110,7 +114,6 @@ void	deal_with_redirection(t_metadata *cmd)
 			deal_with_input(cmd, i);
 		if (!ft_strcmp(cmd->token[i], "<<"))
 			deal_with_heredoc(cmd, i);
-		i++;
 	}
 	return (0);
 }
@@ -121,7 +124,7 @@ void	run_cmd(t_metadata *cmd)
 		//빌트인 처리
 		//return ;
 	deal_with_redirection(cmd);
-	execve(cmd->token[0], cmd->token, NULL);
+	execve(find_cmd(cmd->token[0]), cmd->token, NULL);
 }
 
 int	execute(t_metadata *cmd)

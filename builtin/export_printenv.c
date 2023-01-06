@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:26:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 22:03:23 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 10:50:16 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,5 @@ void	print_sorted_env(char **env)
 		print_env_in_export(index, env);
 		index++;
 	}
+	free(index_rank);
 }

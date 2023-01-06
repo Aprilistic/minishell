@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/04 14:51:38 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 11:11:24 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	allocate_command_slot(char *commandline, t_metadata **command)
 	}
 	*command = malloc(sizeof(t_metadata) * (command_count + 1));
 	(*command)[command_count].token = NULL;
+	(*command)[command_count].token_count = 0;
 }
 
 void	allocate_t_metadata(t_metadata *command, int token_count)
