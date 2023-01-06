@@ -132,30 +132,32 @@ void	run_cmd(t_metadata *cmd)
 	deal_with_redirection(cmd);
 	path = getenv("PATH");
 	splited_path = ft_split(path, ':');
-	// free(path);
 	i = -1;
 	while (splited_path[++i])
 	{
-		cmd_file = ft_strjoin(splited_path[i], ft_strdup(cmd->token[0]));
+		cmd_file = ft_strjoin(splited_path[i], ft_strdup("/"));
+		cmd_file = ft_strjoin(cmd_file, ft_strdup(cmd->token[0]));
 		if (access(cmd_file, X_OK) == 0)
 			execve(cmd_file, cmd->token, NULL);
 	}
-	// free(splited_path);
-	execve(cmd->token[0], cmd->token, NULL);
 	perror("");
+	execve(cmd->token[0], cmd->token, NULL);
+	exit(0);
 }
 
 int	execute(t_metadata *cmd)
 {
 	int	idx;
-	int	save_stdin;
+	int	save[2];
 	int	old_fd[2];
 	int	new_fd[2];
 
 	old_fd[0] = STDIN_FILENO;
-	save_stdin = dup(STDIN_FILENO);
-	idx = 0;
-	while (cmd[idx].token != NULL)
+	new_fd[1] = STDOUT_FILENO;
+	save[0] = dup(STDIN_FILENO);
+	save[1] = dup(STDOUT_FILENO);
+	idx = -1;
+	while (cmd[++idx].token != NULL)
 	{
 		pipe(new_fd);
 		if (fork() == 0)
@@ -166,14 +168,12 @@ int	execute(t_metadata *cmd)
 			dup2(new_fd[1], STDOUT_FILENO);
 			//명령어 실행
 			run_cmd(&cmd[idx]);
-			//exit!
-			exit(0);
 		}
 		close(old_fd[0]);
 		close(new_fd[1]);
 		ft_memcpy(old_fd, new_fd, sizeof(int) * 2);
-		idx++;
 	}
-	dup2(save_stdin, STDIN_FILENO);
+	dup2(save[0], STDIN_FILENO);
+	dup2(save[1], STDOUT_FILENO);
 	return (1);
 }
