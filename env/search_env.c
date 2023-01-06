@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 14:32:48 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 15:43:02 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_key_from_environ(int index, char **env)
 }
 
 //returns matching index from env
-static int	search_from_environ(char *token, char **env)
+int	search_from_environ(char *token, char **env)
 {
 	char	*key;
 	int		env_index;

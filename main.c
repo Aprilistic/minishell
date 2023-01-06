@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 21:05:09 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 16:35:59 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int argc, char **argv, char **env)
 		parse_input(&command, env);
 		check_command(&command);
 		//execute
-		/* execute(command) */
+		execute(command);
 
 		//retrieve_memory
 		retrieve_memory(&command);

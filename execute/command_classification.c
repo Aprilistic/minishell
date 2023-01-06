@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 11:21:16 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 17:03:47 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,10 @@
 // 	int		*token_merge_flag;
 // }			t_metadata;
 
-//명령어가 빌트인일 때랑 아닐 때 나누기
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return (*s1 - *s2);
-}
+//cat argfile > outfile
+//cat argfile >> outfile
+//                       -----> cat argfile NULL outfile
+//  					 -----> cat argfile NULL outfile  
 
 void	deal_with_output(t_metadata *cmd, int idx)
 {
@@ -41,7 +34,9 @@ void	deal_with_output(t_metadata *cmd, int idx)
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
+	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
+	cmd->token[idx + 1] = NULL;
 }
 
 void	deal_with_append(t_metadata *cmd, int idx)
@@ -54,9 +49,12 @@ void	deal_with_append(t_metadata *cmd, int idx)
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
+	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
+	cmd->token[idx + 1] = NULL;
 }
 
+//cmd 위치 바꾸기 command로 redirection 빼고
 void	deal_with_input(t_metadata *cmd, int idx)
 {
 	int	fd;
@@ -67,7 +65,9 @@ void	deal_with_input(t_metadata *cmd, int idx)
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
+	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
+	cmd->token[idx + 1] = NULL;
 }
 
 void	deal_with_heredoc(t_metadata *cmd, int idx)
@@ -94,7 +94,9 @@ void	deal_with_heredoc(t_metadata *cmd, int idx)
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
+	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
+	cmd->token[idx + 1] = NULL;
 }
 
 void	deal_with_redirection(t_metadata *cmd)
@@ -115,25 +117,43 @@ void	deal_with_redirection(t_metadata *cmd)
 		if (!ft_strcmp(cmd->token[i], "<<"))
 			deal_with_heredoc(cmd, i);
 	}
-	return (0);
 }
 
 void	run_cmd(t_metadata *cmd)
 {
+	int		i;
+	char	*path;
+	char	*cmd_file;
+	char	**splited_path;
+
 	//if (cmd가 빌트인)
 		//빌트인 처리
 		//return ;
 	deal_with_redirection(cmd);
-	execve(find_cmd(cmd->token[0]), cmd->token, NULL);
+	path = getenv("PATH");
+	splited_path = ft_split(path, ':');
+	// free(path);
+	i = -1;
+	while (splited_path[++i])
+	{
+		cmd_file = ft_strjoin(splited_path[i], ft_strdup(cmd->token[0]));
+		if (access(cmd_file, X_OK) == 0)
+			execve(cmd_file, cmd->token, NULL);
+	}
+	// free(splited_path);
+	execve(cmd->token[0], cmd->token, NULL);
+	perror("");
 }
 
 int	execute(t_metadata *cmd)
 {
 	int	idx;
+	int	save_stdin;
 	int	old_fd[2];
 	int	new_fd[2];
 
 	old_fd[0] = STDIN_FILENO;
+	save_stdin = dup(STDIN_FILENO);
 	idx = 0;
 	while (cmd[idx].token != NULL)
 	{
@@ -146,10 +166,14 @@ int	execute(t_metadata *cmd)
 			dup2(new_fd[1], STDOUT_FILENO);
 			//명령어 실행
 			run_cmd(&cmd[idx]);
+			//exit!
+			exit(0);
 		}
 		close(old_fd[0]);
 		close(new_fd[1]);
 		ft_memcpy(old_fd, new_fd, sizeof(int) * 2);
 		idx++;
 	}
+	dup2(save_stdin, STDIN_FILENO);
+	return (1);
 }
