@@ -6,17 +6,16 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:01:37 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 15:48:22 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 19:40:37 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	
-
 void	builtin_unset(t_metadata *command, char **env)
 {
 	int	token_index;
+	int	env_count;
 	int	env_index;
 
 	token_index = 1;
@@ -25,7 +24,14 @@ void	builtin_unset(t_metadata *command, char **env)
 		env_index = search_from_environ(command->token[token_index], env);
 		if (env_index == ERROR)
 			continue ;
-		
+		env_count = 0;
+		while (env[env_count])
+			env_count++;
+		while (env_index < env_count)
+		{
+			env[env_index] = env[env_index + 1];
+			env_index++;
+		}
 		token_index++;
 	}
 }
