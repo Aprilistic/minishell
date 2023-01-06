@@ -15,7 +15,6 @@
 int	parse_input(t_metadata **command, char **env)
 {
 	char	*commandline;
-	int		idx;
 
 	read_commandline(&commandline);
 	allocate_command_slot(commandline, command);

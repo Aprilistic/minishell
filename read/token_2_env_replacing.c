@@ -54,7 +54,6 @@ void	replace_env_variable(char **token, char **env)
 {
 	char	*replacement;
 	char	*tmp;
-	char	*dollar_sign;
 	int		prefix_size;
 	int		key_size;
 

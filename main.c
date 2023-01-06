@@ -74,6 +74,7 @@ int	main(int argc, char **argv, char **env)
 
 	atexit(&leaks);
 	//argv control(error check) is needed
+	(void)argv;
 	if (argc != 1)
 	{
 		write(STDERR_FILENO, "Seriously? We don't need argv. Au Revoir\n", 42);

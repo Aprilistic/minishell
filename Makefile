@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS	= -L$(shell brew --prefix readline)/lib
 CPPFLAGS = -I$(shell brew --prefix readline)/include

@@ -32,7 +32,6 @@ static char	*get_current_token(char *addr, char **env, int quote_flag)
 {
 	char	*token;
 	int		token_size;
-	char	*temp;
 
 	token_size = skip_current_token(addr) - addr + 1;
 	token = ft_calloc(sizeof(char), token_size + 1);

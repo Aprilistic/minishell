@@ -102,7 +102,6 @@ void	merge_token(t_metadata **command)
 {
 	int	command_count;
 	int	command_index;
-	int	token_index;
 
 	command_count = 0;
 	while ((*command)[command_count].token)
