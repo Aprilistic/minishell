@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 17:01:17 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 17:36:31 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,28 @@ static char	*get_env_dict(char *token)
 	return (ret);
 }
 
-static int	token_validity_check(char *token)
+static void	modify_env(char *token, char *env_dict, char **env)
 {
 	char	*key;
+	int		env_index;
 
 	key = parse_key(token);
-	if (key == NULL)
+	env_index = search_from_environ(key, env);
+	if (env_index == ERROR)
 	{
-		write(STDERR_FILENO, "미니쉘: export: '", 20);
-		write(STDERR_FILENO, token, ft_strlen(token));
-		write(STDERR_FILENO, "' not a valid identifier\n", 26);
-		ret = NULL;
+		env_index = 0;
+		while (env[env_index])
+			env_index++;
+		env[env_index] = env_dict;
+		env[env_index + 1] = NULL;
 	}
+	else
+		env[env_index] = env_dict;
+	free(key);
 }
 
-static int	add_env(t_metadata *command, char **env)
+int	put_env(t_metadata *command, char **env)
 {
-	int		env_index;
 	int		token_index;
 	int		exit_status;
 	char	*env_dict;
@@ -97,17 +102,12 @@ static int	add_env(t_metadata *command, char **env)
 	exit_status = 0;
 	while (token_index < command->token_count)
 	{
+		//possible memory leak
 		env_dict = parse_env_dict(command->token[token_index]);
 		if (env_dict == NULL)
 			exit_status = 1;
 		else
-		{
-			env_index = 0;
-			while (env[env_index])
-				env_index++;
-			env[env_index] = env_dict;
-			env[env_index + 1] = NULL;
-		}
+			modify_env(command->token[token_index], env_dict, env);
 		token_index++;
 	}
 	exit(exit_status);
