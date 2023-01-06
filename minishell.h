@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 17:36:59 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/06 20:50:03 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void		builtin_env(char **env);
 void		builtin_exit(t_metadata *command);
 void		builtin_export(t_metadata *command, char **env);
 void		builtin_pwd(char **env);
+void		builtin_unset(t_metadata *command, char **env);
 
 void		print_sorted_env(char **env);
 int			put_env(t_metadata *command, char **env);
