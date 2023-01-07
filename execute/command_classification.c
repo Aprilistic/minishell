@@ -23,6 +23,7 @@
 //cat argfile >> outfile
 //                       -----> cat argfile NULL outfile
 //  					 -----> cat argfile NULL outfile  
+int	save[2];
 
 void	deal_with_output(t_metadata *cmd, int idx)
 {
@@ -74,23 +75,22 @@ void	deal_with_heredoc(t_metadata *cmd, int idx)
 {
 	int		fd;
 	char	*line;
-	char	*limiter;
 
-	if (access(HEREDOC_FILE, R_OK) == -1)
+	if (access(HEREDOC_FILE, W_OK | R_OK) == -1)
 		unlink(HEREDOC_FILE);
-	fd = open(HEREDOC_FILE, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	fd = open(HEREDOC_FILE, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (perror(""));
-	limiter = ft_strjoin(ft_strdup(cmd->token[idx + 1]), ft_strdup("\n"));
+	dup2(save[0], STDIN_FILENO);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, limiter))
+		if (!line || !ft_strcmp(line, cmd->token[idx + 1]))
 			break ;
 		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
-	free(limiter);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
@@ -110,11 +110,11 @@ void	deal_with_redirection(t_metadata *cmd)
 			continue ;
 		if (!ft_strcmp(cmd->token[i], ">"))
 			deal_with_output(cmd, i);
-		if (!ft_strcmp(cmd->token[i], ">>"))
+		else if (!ft_strcmp(cmd->token[i], ">>"))
 			deal_with_append(cmd, i);
-		if (!ft_strcmp(cmd->token[i], "<"))
+		else if (!ft_strcmp(cmd->token[i], "<"))
 			deal_with_input(cmd, i);
-		if (!ft_strcmp(cmd->token[i], "<<"))
+		else if (!ft_strcmp(cmd->token[i], "<<"))
 			deal_with_heredoc(cmd, i);
 	}
 }
@@ -140,15 +140,14 @@ void	run_cmd(t_metadata *cmd)
 		if (access(cmd_file, X_OK) == 0)
 			execve(cmd_file, cmd->token, NULL);
 	}
-	perror("");
 	execve(cmd->token[0], cmd->token, NULL);
+	perror("");
 	exit(0);
 }
 
 int	execute(t_metadata *cmd)
 {
 	int	idx;
-	int	save[2];
 	int	old_fd[2];
 	int	new_fd[2];
 
@@ -159,14 +158,13 @@ int	execute(t_metadata *cmd)
 	idx = -1;
 	while (cmd[++idx].token != NULL)
 	{
-		pipe(new_fd);
+		if (cmd[idx + 1].token != NULL)
+			pipe(new_fd);
 		if (fork() == 0)
 		{
-			//전에 있던 결과물을 입력값으로 받게 만든다.
 			dup2(old_fd[0], STDIN_FILENO);
-			//출력값을 new_fd로 보내게 만든다.
-			dup2(new_fd[1], STDOUT_FILENO);
-			//명령어 실행
+			if (cmd[idx + 1].token != NULL)
+				dup2(new_fd[1], STDOUT_FILENO);
 			run_cmd(&cmd[idx]);
 		}
 		close(old_fd[0]);
@@ -175,5 +173,7 @@ int	execute(t_metadata *cmd)
 	}
 	dup2(save[0], STDIN_FILENO);
 	dup2(save[1], STDOUT_FILENO);
+	while (idx--)
+		waitpid(-1, NULL, 0);
 	return (1);
 }
