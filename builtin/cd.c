@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 17:19:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 18:50:09 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ static void	go_to_selected_directory(char *path, char **env)
 	char	*pwd;
 	char	*new_token;
 
+	if (ft_strcmp(path, "-") == 0)
+	{
+		if (getenv("OLDPWD") == NULL)
+			exit(print_error(F_PROMPT, "cd", NULL, "OLDPWD not set"));
+		go_to_selected_directory(getenv("OLDPWD"), env);
+	}
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(path))
 	{
