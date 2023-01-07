@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 18:50:09 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 19:40:46 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	go_to_selected_directory(char *path, char **env)
 	{
 		if (getenv("OLDPWD") == NULL)
 			exit(print_error(F_PROMPT, "cd", NULL, "OLDPWD not set"));
+		printf("%s\n", getenv("OLDPWD"));
 		go_to_selected_directory(getenv("OLDPWD"), env);
 	}
 	old_pwd = getcwd(NULL, 0);
@@ -40,6 +41,12 @@ static void	go_to_selected_directory(char *path, char **env)
 	exit(0);
 }
 
+static void	search_from_cdpath(char *path, char **env)
+{
+	chdir(getenv("CDPATH"));
+	go_to_selected_directory(path, env);
+}
+
 static void	go_to_home_directory(char **env)
 {
 	int		env_index;
@@ -50,7 +57,7 @@ static void	go_to_home_directory(char **env)
 		print_error(F_PROMPT, "cd", NULL, "HOME not set");
 		exit(1);
 	}
-	if (ft_strchr(env[env_index], '=') == NULL)
+	else if (ft_strchr(env[env_index], '=') == NULL)
 	{
 		print_error(F_PROMPT, "cd", NULL, "HOME not set");
 		exit(1);
@@ -63,10 +70,15 @@ void	builtin_cd(t_metadata *command, char **env)
 	if (command->token_count > 2)
 	{
 		print_error(F_PROMPT, "cd", NULL, "too many arguments");
-		exit(1);
+		exit_code = 1;
 	}
 	else if (command->token_count == 2)
-		go_to_selected_directory(command->token[1], env);
+	{
+		if (command->token[1][0] != '/' && getenv("CDPATH"))
+			search_from_cdpath(command->token[1], env);
+		else
+			go_to_selected_directory(command->token[1], env);
+	}
 	else
 		go_to_home_directory(env);
 }
