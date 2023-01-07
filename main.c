@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_metadata	*command;
 
-	atexit(&leaks);
+	// atexit(&leaks);
 	//argv control(error check) is needed
 	(void)argv;
 	if (argc != 1)

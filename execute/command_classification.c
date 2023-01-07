@@ -12,105 +12,14 @@
 
 #include "../minishell.h"
 
-// typedef struct s_metadata
-// {
-// 	int		token_count;
-// 	char	**token;
-// 	int		*token_merge_flag;
-// }			t_metadata;
-
-//cat argfile > outfile
-//cat argfile >> outfile
-//                       -----> cat argfile NULL outfile
-//  					 -----> cat argfile NULL outfile  
-int	save[2];
-
-void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
-{
-	int	fd;
-
-	fd = open(cmd->token[idx + 1], O_CREAT | O_WRONLY, 0644);
-	if (fd == -1)
-		return (perror(""));
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	free(cmd->token[idx]);
-	free(cmd->token[idx + 1]);
-	cmd->token[idx] = NULL;
-	cmd->token[idx + 1] = NULL;
-	(*change_cnt) += 2;
-}
-
-void	deal_with_append(t_metadata *cmd, int idx, int *change_cnt)
-{
-	int	fd;
-
-	fd = open(cmd->token[idx + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
-	if (fd == -1)
-		return (perror(""));
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	free(cmd->token[idx]);
-	free(cmd->token[idx + 1]);
-	cmd->token[idx] = NULL;
-	cmd->token[idx + 1] = NULL;
-	(*change_cnt) += 2;
-}
-
-//cmd 위치 바꾸기 command로 redirection 빼고
-void	deal_with_input(t_metadata *cmd, int idx, int *change_cnt)
-{
-	int	fd;
-
-	fd = open(cmd->token[idx + 1], O_RDONLY);
-	if (fd == -1)
-		return (perror(""));
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	free(cmd->token[idx]);
-	free(cmd->token[idx + 1]);
-	cmd->token[idx] = NULL;
-	cmd->token[idx + 1] = NULL;
-	(*change_cnt) += 2;
-}
-
-void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt)
-{
-	int		fd;
-	char	*line;
-
-	if (access(HEREDOC_FILE, W_OK | R_OK) == -1)
-		unlink(HEREDOC_FILE);
-	fd = open(HEREDOC_FILE, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (fd == -1)
-		return (perror(""));
-	dup2(save[0], STDIN_FILENO);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || !ft_strcmp(line, cmd->token[idx + 1]))
-			break ;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	free(cmd->token[idx]);
-	free(cmd->token[idx + 1]);
-	cmd->token[idx] = NULL;
-	cmd->token[idx + 1] = NULL;
-	(*change_cnt) += 2;
-}
-
 void	adjust_cmd(t_metadata *cmd, int change_cnt)
 {
 	int		i;
 	int		put_pos;
 	char	**new_token;
 
-	new_token =\
-		(char **)malloc(sizeof(char *) * (cmd->token_count - change_cnt + 1));
+	new_token
+		= (char **)malloc(sizeof(char *) * (cmd->token_count - change_cnt + 1));
 	new_token[cmd->token_count - change_cnt] = NULL;
 	put_pos = 0;
 	i = -1;
@@ -121,7 +30,7 @@ void	adjust_cmd(t_metadata *cmd, int change_cnt)
 	cmd->token = new_token;
 }
 
-void	deal_with_redirection(t_metadata *cmd)
+void	deal_with_redirection(t_metadata *cmd, t_exec *exec)
 {
 	int	i;
 	int	change_cnt;
@@ -139,13 +48,13 @@ void	deal_with_redirection(t_metadata *cmd)
 		else if (!ft_strcmp(cmd->token[i], "<"))
 			deal_with_input(cmd, i, &change_cnt);
 		else if (!ft_strcmp(cmd->token[i], "<<"))
-			deal_with_heredoc(cmd, i, &change_cnt);
+			deal_with_heredoc(cmd, i, &change_cnt, exec);
 	}
 	if (change_cnt > 0)
 		adjust_cmd(cmd, change_cnt);
 }
 
-void	run_cmd(t_metadata *cmd, char **env)
+void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 {
 	int		i;
 	char	*path;
@@ -153,9 +62,7 @@ void	run_cmd(t_metadata *cmd, char **env)
 	char	**splited_path;
 
 	//if (cmd가 빌트인)
-		//빌트인 처리
-		//return ;
-	deal_with_redirection(cmd);
+	deal_with_redirection(cmd, exec);
 	path = getenv("PATH");
 	splited_path = ft_split(path, ':');
 	i = -1;
@@ -165,43 +72,55 @@ void	run_cmd(t_metadata *cmd, char **env)
 		cmd_file = ft_strjoin(cmd_file, ft_strdup(cmd->token[0]));
 		if (access(cmd_file, X_OK) == 0)
 			execve(cmd_file, cmd->token, env);
+		free(cmd_file);
 	}
-	free(cmd_file);
 	free(splited_path);
 	execve(cmd->token[0], cmd->token, env);
 	perror("");
 	exit(0);
 }
 
-int	execute(t_metadata *cmd, char **env)
+void	exec_helper(t_exec *exec, int should_init)
 {
-	int	idx;
-	int	old_fd[2];
-	int	new_fd[2];
+	if (should_init)
+	{
+		exec->old_fd[0] = STDIN_FILENO;
+		exec->new_fd[1] = STDOUT_FILENO;
+		exec->save[0] = dup(STDIN_FILENO);
+		exec->save[1] = dup(STDOUT_FILENO);
+		return ;
+	}
+	dup2(exec->save[0], STDIN_FILENO);
+	dup2(exec->save[1], STDOUT_FILENO);
+	close(exec->save[0]);
+	close(exec->save[1]);
+}
 
-	old_fd[0] = new_fd[0] = STDIN_FILENO;
-	old_fd[1] = new_fd[1] = STDOUT_FILENO;
-	save[0] = dup(STDIN_FILENO);
-	save[1] = dup(STDOUT_FILENO);
+void	execute(t_metadata *cmd, char **env)
+{
+	int		idx;
+	t_exec	exec;
+
+	exec_helper(&exec, 1);
 	idx = -1;
 	while (cmd[++idx].token != NULL)
 	{
 		if (cmd[idx + 1].token != NULL)
-			pipe(new_fd);
-		if (fork() == 0)
+			pipe(exec.new_fd);
+		exec.pid = fork();
+		if (exec.pid == 0)
 		{
 			if (cmd[idx + 1].token != NULL)
-				dup2(new_fd[1], STDOUT_FILENO);
-			dup2(old_fd[0], STDIN_FILENO);
-			run_cmd(&cmd[idx], env);
+				dup2(exec.new_fd[1], STDOUT_FILENO);
+			dup2(exec.old_fd[0], STDIN_FILENO);
+			run_cmd(&cmd[idx], &exec, env);
 		}
-		close(new_fd[1]);
-		close(old_fd[0]);
-		ft_memcpy(old_fd, new_fd, sizeof(int) * 2);
+		close(exec.new_fd[1]);
+		close(exec.old_fd[0]);
+		ft_memcpy(exec.old_fd, exec.new_fd, sizeof(int) * 2);
 	}
 	while (idx--)
-		waitpid(-1, NULL, 0);
-	dup2(save[0], STDIN_FILENO);
-	dup2(save[1], STDOUT_FILENO);
-	return (1);
+		if (exec.pid == waitpid(-1, &exec.status, 0))
+			g_exit_code = exec.status;
+	exec_helper(&exec, 0);
 }

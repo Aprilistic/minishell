@@ -30,7 +30,7 @@
 # define F_PROMPT "미니쉘: "
 # define S_PROMPT "> "
 
-int			exit_code;
+int			g_exit_code;
 
 typedef enum e_command_type
 {
@@ -46,6 +46,15 @@ typedef struct s_metadata
 	int		*token_quote_flag;
 	int		*token_merge_flag;
 }			t_metadata;
+
+typedef struct s_exec
+{
+	int		pid;
+	int		status;
+	int		save[2];
+	int		old_fd[2];
+	int		new_fd[2];
+}	t_exec;
 
 /* read */
 int			read_commandline(char **commandline);
@@ -70,7 +79,12 @@ char		*get_value_from_environ(char *key, char **env);
 int			search_from_environ(char *token, char **env);
 
 /* execute */
-int			execute(t_metadata *cmd, char **env);
+void		deal_with_output(t_metadata *cmd, int idx, int *change_cnt);
+void		deal_with_append(t_metadata *cmd, int idx, int *change_cnt);
+void		deal_with_input(t_metadata *cmd, int idx, int *change_cnt);
+void		deal_with_heredoc(t_metadata *cmd, int idx,
+				int *change_cnt, t_exec *exec);
+void		execute(t_metadata *cmd, char **env);
 
 /* builtin */
 void		builtin_echo(t_metadata *command);

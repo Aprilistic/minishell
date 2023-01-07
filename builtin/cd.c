@@ -70,7 +70,7 @@ void	builtin_cd(t_metadata *command, char **env)
 	if (command->token_count > 2)
 	{
 		print_error(F_PROMPT, "cd", NULL, "too many arguments");
-		exit_code = 1;
+		g_exit_code = 1;
 	}
 	else if (command->token_count == 2)
 	{

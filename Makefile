@@ -19,7 +19,8 @@ CPPFLAGS = -I$(shell brew --prefix readline)/include
 SRCS	= main.c read/read.c read/read_commandline.c \
 			read/token_0_allocation.c read/token_1_parsing.c \
 			read/token_2_env_replacing.c read/token_3_merging.c \
-			signal/signal.c execute/command_classification.c env/search_env.c \
+			signal/signal.c execute/command_classification.c \
+			execute/command_utils.c	env/search_env.c \
 			builtin/cd.c builtin/echo.c builtin/env.c builtin/exit.c \
 			builtin/export.c builtin/export_addenv.c builtin/export_printenv.c \
 			builtin/pwd.c builtin/unset.c \

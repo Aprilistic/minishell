@@ -61,7 +61,7 @@ char	*get_value_from_environ(char *key, char **env)
 	if (key[1] == 0)
 		value = ft_strdup("$");
 	else if (key[1] == '?')
-		value = ft_itoa((unsigned short)exit_code);
+		value = ft_itoa((unsigned short)g_exit_code);
 	else
 	{
 		index = search_from_environ(key + 1, env);
