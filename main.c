@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **env)
 		parse_input(&command, env);
 		// check_command(&command);
 		//execute
-		execute(command);
+		execute(command, env);
 
 		//retrieve_memory
 		retrieve_memory(&command);

@@ -70,7 +70,7 @@ char		*get_value_from_environ(char *key, char **env);
 int			search_from_environ(char *token, char **env);
 
 /* execute */
-int			execute(t_metadata *cmd);
+int			execute(t_metadata *cmd, char **env);
 
 /* builtin */
 void		builtin_echo(t_metadata *command);

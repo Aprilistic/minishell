@@ -130,7 +130,7 @@ void	deal_with_redirection(t_metadata *cmd)
 	i = -1;
 	while (++i < cmd->token_count)
 	{
-		if (cmd->token[i] == NULL)
+		if (cmd->token[i] == NULL || cmd->token_quote_flag)
 			continue ;
 		if (!ft_strcmp(cmd->token[i], ">"))
 			deal_with_output(cmd, i, &change_cnt);
@@ -145,7 +145,7 @@ void	deal_with_redirection(t_metadata *cmd)
 		adjust_cmd(cmd, change_cnt);
 }
 
-void	run_cmd(t_metadata *cmd)
+void	run_cmd(t_metadata *cmd, char **env)
 {
 	int		i;
 	char	*path;
@@ -164,23 +164,23 @@ void	run_cmd(t_metadata *cmd)
 		cmd_file = ft_strjoin(splited_path[i], ft_strdup("/"));
 		cmd_file = ft_strjoin(cmd_file, ft_strdup(cmd->token[0]));
 		if (access(cmd_file, X_OK) == 0)
-			execve(cmd_file, cmd->token, NULL);
+			execve(cmd_file, cmd->token, env);
 	}
 	free(cmd_file);
 	free(splited_path);
-	execve(cmd->token[0], cmd->token, NULL);
+	execve(cmd->token[0], cmd->token, env);
 	perror("");
 	exit(0);
 }
 
-int	execute(t_metadata *cmd)
+int	execute(t_metadata *cmd, char **env)
 {
 	int	idx;
 	int	old_fd[2];
 	int	new_fd[2];
 
-	old_fd[0] = STDIN_FILENO;
-	new_fd[1] = STDOUT_FILENO;
+	old_fd[0] = new_fd[0] = STDIN_FILENO;
+	old_fd[1] = new_fd[1] = STDOUT_FILENO;
 	save[0] = dup(STDIN_FILENO);
 	save[1] = dup(STDOUT_FILENO);
 	idx = -1;
@@ -190,18 +190,18 @@ int	execute(t_metadata *cmd)
 			pipe(new_fd);
 		if (fork() == 0)
 		{
-			dup2(old_fd[0], STDIN_FILENO);
 			if (cmd[idx + 1].token != NULL)
 				dup2(new_fd[1], STDOUT_FILENO);
-			run_cmd(&cmd[idx]);
+			dup2(old_fd[0], STDIN_FILENO);
+			run_cmd(&cmd[idx], env);
 		}
-		close(old_fd[0]);
 		close(new_fd[1]);
+		close(old_fd[0]);
 		ft_memcpy(old_fd, new_fd, sizeof(int) * 2);
 	}
-	dup2(save[0], STDIN_FILENO);
-	dup2(save[1], STDOUT_FILENO);
 	while (idx--)
 		waitpid(-1, NULL, 0);
+	dup2(save[0], STDIN_FILENO);
+	dup2(save[1], STDOUT_FILENO);
 	return (1);
 }
