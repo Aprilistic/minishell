@@ -25,7 +25,7 @@
 //  					 -----> cat argfile NULL outfile  
 int	save[2];
 
-void	deal_with_output(t_metadata *cmd, int idx)
+void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
 
@@ -38,9 +38,10 @@ void	deal_with_output(t_metadata *cmd, int idx)
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
 	cmd->token[idx + 1] = NULL;
+	(*change_cnt) += 2;
 }
 
-void	deal_with_append(t_metadata *cmd, int idx)
+void	deal_with_append(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
 
@@ -53,10 +54,11 @@ void	deal_with_append(t_metadata *cmd, int idx)
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
 	cmd->token[idx + 1] = NULL;
+	(*change_cnt) += 2;
 }
 
 //cmd 위치 바꾸기 command로 redirection 빼고
-void	deal_with_input(t_metadata *cmd, int idx)
+void	deal_with_input(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
 
@@ -69,9 +71,10 @@ void	deal_with_input(t_metadata *cmd, int idx)
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
 	cmd->token[idx + 1] = NULL;
+	(*change_cnt) += 2;
 }
 
-void	deal_with_heredoc(t_metadata *cmd, int idx)
+void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int		fd;
 	char	*line;
@@ -97,26 +100,49 @@ void	deal_with_heredoc(t_metadata *cmd, int idx)
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
 	cmd->token[idx + 1] = NULL;
+	(*change_cnt) += 2;
+}
+
+void	adjust_cmd(t_metadata *cmd, int change_cnt)
+{
+	int		i;
+	int		put_pos;
+	char	**new_token;
+
+	new_token =\
+		(char **)malloc(sizeof(char *) * (cmd->token_count - change_cnt + 1));
+	new_token[cmd->token_count - change_cnt] = NULL;
+	put_pos = 0;
+	i = -1;
+	while (++i < cmd->token_count)
+		if (cmd->token[i] != NULL)
+			new_token[put_pos++] = cmd->token[i];
+	free(cmd->token);
+	cmd->token = new_token;
 }
 
 void	deal_with_redirection(t_metadata *cmd)
 {
 	int	i;
+	int	change_cnt;
 
+	change_cnt = 0;
 	i = -1;
 	while (++i < cmd->token_count)
 	{
 		if (cmd->token[i] == NULL)
 			continue ;
 		if (!ft_strcmp(cmd->token[i], ">"))
-			deal_with_output(cmd, i);
+			deal_with_output(cmd, i, &change_cnt);
 		else if (!ft_strcmp(cmd->token[i], ">>"))
-			deal_with_append(cmd, i);
+			deal_with_append(cmd, i, &change_cnt);
 		else if (!ft_strcmp(cmd->token[i], "<"))
-			deal_with_input(cmd, i);
+			deal_with_input(cmd, i, &change_cnt);
 		else if (!ft_strcmp(cmd->token[i], "<<"))
-			deal_with_heredoc(cmd, i);
+			deal_with_heredoc(cmd, i, &change_cnt);
 	}
+	if (change_cnt > 0)
+		adjust_cmd(cmd, change_cnt);
 }
 
 void	run_cmd(t_metadata *cmd)
@@ -140,6 +166,8 @@ void	run_cmd(t_metadata *cmd)
 		if (access(cmd_file, X_OK) == 0)
 			execve(cmd_file, cmd->token, NULL);
 	}
+	free(cmd_file);
+	free(splited_path);
 	execve(cmd->token[0], cmd->token, NULL);
 	perror("");
 	exit(0);
