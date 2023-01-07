@@ -80,12 +80,12 @@ int	main(int argc, char **argv, char **env)
 		write(STDERR_FILENO, "Seriously? We don't need argv. Au Revoir\n", 42);
 		return (2);
 	}
-	signal(SIGINT, handler);
+	handle_signal();
 	while (1)
 	{
 		command = NULL;
 		parse_input(&command, env);
-		check_command(&command);
+		// check_command(&command);
 		//execute
 		execute(command);
 

@@ -61,7 +61,8 @@ void		allocate_token_slot(char *commandline, t_metadata **command);
 void		replace_env_variable(char **token, char **env);
 
 /* signal */
-void		handler(int signum);
+void		sigint_handler(int signum);
+void		handle_signal(void);
 
 /* env */
 char		*get_key_from_environ(int index, char **env);
