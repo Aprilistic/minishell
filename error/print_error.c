@@ -6,13 +6,13 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 14:57:36 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 15:16:57 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 18:49:24 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_error(char *prompt, char *command, char *token, char *message)
+int	print_error(char *prompt, char *command, char *token, char *message)
 {
 	if (prompt)
 	{
@@ -32,4 +32,5 @@ void	print_error(char *prompt, char *command, char *token, char *message)
 	if (message)
 		write(STDERR_FILENO, message, ft_strlen(message));
 	write(STDERR_FILENO, "\n", 1);
+	return (1);
 }

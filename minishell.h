@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 17:21:04 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 18:49:42 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int			modify_env(char *token, char **env);
 int			put_env(t_metadata *command, char **env);
 
 /* error */
-void		print_error(char *prompt, char *command,
+int			print_error(char *prompt, char *command,
 				char *token, char *message);
 
 #endif
