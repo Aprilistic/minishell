@@ -12,7 +12,6 @@
 
 #include "../minishell.h"
 
-
 void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
@@ -66,8 +65,7 @@ void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt, t_exec *exec)
 	int		fd;
 	char	*line;
 
-	if (access(HEREDOC_FILE, W_OK | R_OK) == -1)
-		unlink(HEREDOC_FILE);
+	unlink(HEREDOC_FILE);
 	fd = open(HEREDOC_FILE, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd == -1)
 		return (perror(""));

@@ -71,7 +71,11 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 		cmd_file = ft_strjoin(splited_path[i], ft_strdup("/"));
 		cmd_file = ft_strjoin(cmd_file, ft_strdup(cmd->token[0]));
 		if (access(cmd_file, X_OK) == 0)
+		{
+			for (int i = 0; cmd->token[i]; i++)
+				printf("%s\n", cmd->token[i]);
 			execve(cmd_file, cmd->token, env);
+		}
 		free(cmd_file);
 	}
 	free(splited_path);
