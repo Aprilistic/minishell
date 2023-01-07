@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 20:50:03 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 16:41:33 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 
 # define ERROR -1
 # define HEREDOC_FILE "/tmp/.here_doc"
+
+# define F_PROMPT "미니쉘: "
+# define S_PROMPT "> "
 
 int			exit_code;
 
@@ -77,6 +80,11 @@ void		builtin_pwd(char **env);
 void		builtin_unset(t_metadata *command, char **env);
 
 void		print_sorted_env(char **env);
+int			modify_env(char *token, char **env);
 int			put_env(t_metadata *command, char **env);
+
+/* error */
+void		print_error(char *prompt, char *command,
+				char *token, char *message);
 
 #endif

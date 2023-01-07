@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 17:36:31 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 16:40:16 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ static char	*get_env_dict(char *token)
 	key = parse_key(token);
 	if (key == NULL)
 	{
-		write(STDERR_FILENO, "미니쉘: export: '", 20);
-		write(STDERR_FILENO, token, ft_strlen(token));
-		write(STDERR_FILENO, "' not a valid identifier\n", 26);
+		print_error(F_PROMPT, "export", token, "not a valid identifier");
 		ret = NULL;
 	}
 	else
@@ -72,11 +70,15 @@ static char	*get_env_dict(char *token)
 	return (ret);
 }
 
-static void	modify_env(char *token, char *env_dict, char **env)
+int	modify_env(char *token, char **env)
 {
 	char	*key;
+	char	*env_dict;
 	int		env_index;
 
+	env_dict = parse_env_dict(token);
+	if (env_dict == NULL)
+		return (1);
 	key = parse_key(token);
 	env_index = search_from_environ(key, env);
 	if (env_index == ERROR)
@@ -90,25 +92,21 @@ static void	modify_env(char *token, char *env_dict, char **env)
 	else
 		env[env_index] = env_dict;
 	free(key);
+	return (0);
 }
 
 int	put_env(t_metadata *command, char **env)
 {
 	int		token_index;
 	int		exit_status;
-	char	*env_dict;
 
 	token_index = 1;
 	exit_status = 0;
 	while (token_index < command->token_count)
 	{
 		//possible memory leak
-		env_dict = parse_env_dict(command->token[token_index]);
-		if (env_dict == NULL)
-			exit_status = 1;
-		else
-			modify_env(command->token[token_index], env_dict, env);
+		exit_status |= modify_env(command->token[token_index], env);
 		token_index++;
 	}
-	exit(exit_status);
+	return (exit_status);
 }

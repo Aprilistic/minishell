@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:45:06 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/01 15:32:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 15:14:42 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	handle_input_line(char **commandline, char *prompt)
 	{
 		if (read_again)
 		{
-			write(STDERR_FILENO, "미니쉘: 예상치 못한 파일의 끝\n", 43);
+			print_error(F_PROMPT, NULL, NULL, "예상치 못한 파일의 끝");
 			free(newline);
 			newline = readline(prompt);
 			free(newline);
@@ -85,9 +85,9 @@ int	read_commandline(char **commandline)
 	int			read_again;
 
 	*commandline = ft_strdup("");
-	read_again = handle_input_line(commandline, "미니쉘> ");
+	read_again = handle_input_line(commandline, F_PROMPT);
 	while (read_again)
-		read_again = handle_input_line(commandline, "> ");
+		read_again = handle_input_line(commandline, S_PROMPT);
 	add_history(*commandline);
 	return (0);
 }
