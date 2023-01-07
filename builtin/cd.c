@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 17:10:24 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 17:19:12 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	go_to_selected_directory(char *path, char **env)
 	char	*old_pwd;
 	char	*pwd;
 	char	*new_token;
-	int		exit_status;
 
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(path))
@@ -38,7 +37,6 @@ static void	go_to_selected_directory(char *path, char **env)
 static void	go_to_home_directory(char **env)
 {
 	int		env_index;
-	char	*home_dir;
 
 	env_index = search_from_environ("HOME", env);
 	if (env_index == ERROR)
@@ -56,11 +54,6 @@ static void	go_to_home_directory(char **env)
 
 void	builtin_cd(t_metadata *command, char **env)
 {
-	char	*old_pwd;
-	char	*pwd;
-	char	*new_token;
-	int		exit_status;
-
 	if (command->token_count > 2)
 	{
 		print_error(F_PROMPT, "cd", NULL, "too many arguments");

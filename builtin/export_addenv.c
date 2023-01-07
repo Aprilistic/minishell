@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 16:40:16 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/07 17:19:48 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static char	*parse_value(char *token)
 
 static char	*get_env_dict(char *token)
 {
-	int		exit_status;
 	char	*key;
 	char	*value;
 	char	*ret;
@@ -76,7 +75,7 @@ int	modify_env(char *token, char **env)
 	char	*env_dict;
 	int		env_index;
 
-	env_dict = parse_env_dict(token);
+	env_dict = get_env_dict(token);
 	if (env_dict == NULL)
 		return (1);
 	key = parse_key(token);
