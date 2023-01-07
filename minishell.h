@@ -68,6 +68,8 @@ void		allocate_command_slot(char *commandline, t_metadata **command);
 void		allocate_t_metadata(t_metadata *command, int token_count);
 void		allocate_token_slot(char *commandline, t_metadata **command);
 void		replace_env_variable(char **token, char **env);
+int			check_quote(char *commandline);
+int			check_merge(char *commandline);
 
 /* signal */
 void		sigint_handler(int signum);
