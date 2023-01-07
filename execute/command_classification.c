@@ -130,7 +130,7 @@ void	deal_with_redirection(t_metadata *cmd)
 	i = -1;
 	while (++i < cmd->token_count)
 	{
-		if (cmd->token[i] == NULL || cmd->token_quote_flag)
+		if (cmd->token[i] == NULL || cmd->token_quote_flag[i])
 			continue ;
 		if (!ft_strcmp(cmd->token[i], ">"))
 			deal_with_output(cmd, i, &change_cnt);
