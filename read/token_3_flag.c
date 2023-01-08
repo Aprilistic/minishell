@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 14:13:31 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 14:21:32 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_quote_flag(char *commandline)
 
 int	check_merge_flag(char *commandline)
 {
-	int ret;
+	int	ret;
 
 	ret = 1;
 	if (ft_strchr(" \n\t|", *(commandline + 1)))
