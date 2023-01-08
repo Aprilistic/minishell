@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 14:13:12 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 15:40:44 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void		deal_with_heredoc(t_metadata *cmd, int idx,
 				int *change_cnt, t_exec *exec);
 void		execute(t_metadata *cmd, char **env);
 
+int			check_builtin(t_metadata *command, char **env);
+
 /* builtin */
+void		builtin_cd(t_metadata *command, char **env);
 void		builtin_echo(t_metadata *command);
 void		builtin_env(char **env);
 void		builtin_exit(t_metadata *command);
