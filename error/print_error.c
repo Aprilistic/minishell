@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 14:57:36 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 18:49:24 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 16:43:22 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	print_error(char *prompt, char *command, char *token, char *message)
 	if (prompt)
 	{
 		write(STDERR_FILENO, prompt, ft_strlen(prompt));
-		write(STDERR_FILENO, " ", 1);
 	}
 	if (command)
 	{

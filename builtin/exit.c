@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 14:33:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 13:13:29 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 16:42:05 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	builtin_exit(t_metadata *command)
 	{
 		if (!check_numeric_argument(command->token[1]))
 		{
-			print_error(F_PROMPT, "exit",
+			print_error(E_PROMPT, "exit",
 				command->token[1], "numeric argument required");
 			ret = 2;
 		}
 		else if (command->token_count > 2)
 		{
-			print_error(F_PROMPT, "exit", NULL, "too many arguments");
+			print_error(E_PROMPT, "exit", NULL, "too many arguments");
 			g_exit_code = 2;
 			return ;
 		}

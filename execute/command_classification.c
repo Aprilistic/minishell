@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 15:46:05 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 18:02:17 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	adjust_cmd(t_metadata *cmd, int change_cnt)
 			new_token[put_pos++] = cmd->token[i];
 	free(cmd->token);
 	cmd->token = new_token;
+	cmd->token_count = cmd->token_count - change_cnt;
 }
 
 void	deal_with_redirection(t_metadata *cmd, t_exec *exec)
@@ -61,9 +62,9 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
-	deal_with_redirection(cmd, exec);
-	if (check_builtin(cmd, env))
-		return ;
+	if (check_builtin(cmd, env, exec))
+		exit(0);
+	// deal_with_redirection(cmd, exec);
 	path = getenv("PATH");
 	splited_path = ft_split(path, ':');
 	i = -1;
@@ -77,7 +78,8 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	}
 	free(splited_path);
 	execve(cmd->token[0], cmd->token, env);
-	exit(0);
+	print_error(E_PROMPT, NULL, cmd->token[0], "command not found");
+	exit(127);
 }
 
 void	exec_helper(t_exec *exec, int should_init)
@@ -88,6 +90,7 @@ void	exec_helper(t_exec *exec, int should_init)
 		exec->new_fd[1] = STDOUT_FILENO;
 		exec->save[0] = dup(STDIN_FILENO);
 		exec->save[1] = dup(STDOUT_FILENO);
+		exec->idx = -1;
 		return ;
 	}
 	dup2(exec->save[0], STDIN_FILENO);
@@ -98,31 +101,29 @@ void	exec_helper(t_exec *exec, int should_init)
 
 void	execute(t_metadata *cmd, char **env)
 {
-	int		idx;
 	t_exec	exec;
 
-	//one command builtin exception
-	if (cmd[1].token == NULL && check_builtin(cmd, env))
-		return ;
 	exec_helper(&exec, 1);
-	idx = -1;
-	while (cmd[++idx].token != NULL)
+	//one command builtin exception
+	if (!cmd[0].token || (!cmd[1].token && check_builtin(cmd, env, &exec)))
+		return (exec_helper(&exec, 0));
+	while (cmd[++exec.idx].token != NULL)
 	{
-		if (cmd[idx + 1].token != NULL)
+		if (cmd[exec.idx + 1].token != NULL)
 			pipe(exec.new_fd);
 		exec.pid = fork();
 		if (exec.pid == 0)
 		{
-			if (cmd[idx + 1].token != NULL)
+			if (cmd[exec.idx + 1].token != NULL)
 				dup2(exec.new_fd[1], STDOUT_FILENO);
 			dup2(exec.old_fd[0], STDIN_FILENO);
-			run_cmd(&cmd[idx], &exec, env);
+			run_cmd(&cmd[exec.idx], &exec, env);
 		}
 		close(exec.new_fd[1]);
 		close(exec.old_fd[0]);
 		ft_memcpy(exec.old_fd, exec.new_fd, sizeof(int) * 2);
 	}
-	while (idx--)
+	while (exec.idx--)
 		if (exec.pid == waitpid(-1, &exec.status, 0))
 			g_exit_code = WEXITSTATUS(exec.status);
 	exec_helper(&exec, 0);

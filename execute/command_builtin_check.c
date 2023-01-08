@@ -6,17 +6,18 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:24:40 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 15:46:32 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 18:02:48 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	check_builtin(t_metadata *command, char **env)
+int	check_builtin(t_metadata *command, char **env, t_exec *exec)
 {
 	char	*token;
 	int		ret;
 
+	deal_with_redirection(command, exec);
 	ret = 1;
 	token = command->token[0];
 	if (!ft_strcmp("cd", token))

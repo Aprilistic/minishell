@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 15:46:01 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:56:53 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
 
-	fd = open(cmd->token[idx + 1], O_CREAT | O_WRONLY, 0644);
+	fd = open(cmd->token[idx + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
 		return (perror(""));
 	dup2(fd, STDOUT_FILENO);
@@ -65,7 +65,7 @@ void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt, t_exec *exec)
 	int		fd;
 	char	*line;
 
-	printf("unlink ret : %d\n", unlink(HEREDOC_FILE));
+	unlink(HEREDOC_FILE);
 	fd = open(HEREDOC_FILE, O_CREAT | O_RDWR, 0644);
 	dup2(exec->save[0], STDIN_FILENO);
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 14:22:21 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:01:23 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,20 @@ int	main(int argc, char **argv, char **env)
 	t_metadata	*command;
 
 	// atexit(&leaks);
-	//argv control(error check) is needed
 	(void)argv;
 	if (argc != 1)
 	{
 		write(STDERR_FILENO, "Seriously? We don't need argv. Au Revoir\n", 42);
-		return (2);
+		return (222);
 	}
 	handle_signal();
 	while (1)
 	{
 		command = NULL;
-		parse_input(&command, env);
-		// check_command(&command);
-		//execute
-		execute(command, env);
+		
+		//parse input and execute
+		if (parse_input(&command, env) != ERROR)
+			execute(command, env);
 
 		//retrieve_memory
 		retrieve_memory(&command);

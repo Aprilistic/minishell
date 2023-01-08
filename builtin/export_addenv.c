@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 17:19:48 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:27:14 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*get_env_dict(char *token)
 	key = parse_key(token);
 	if (key == NULL)
 	{
-		print_error(F_PROMPT, "export", token, "not a valid identifier");
+		print_error(E_PROMPT, "export", token, "not a valid identifier");
 		ret = NULL;
 	}
 	else

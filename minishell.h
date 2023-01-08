@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 15:40:44 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:40:06 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@
 # define ERROR -1
 # define HEREDOC_FILE "/tmp/.here_doc"
 
-# define F_PROMPT "미니쉘: "
+# define F_PROMPT "미니쉘$ "
 # define S_PROMPT "> "
+# define E_PROMPT "미니쉘: "
 
 int			g_exit_code;
 
@@ -49,6 +50,7 @@ typedef struct s_metadata
 
 typedef struct s_exec
 {
+	int		idx;
 	int		pid;
 	int		status;
 	int		save[2];
@@ -59,6 +61,7 @@ typedef struct s_exec
 /* read */
 int			read_commandline(char **commandline);
 int			parse_input(t_metadata **command, char **env);
+int			check_syntax(char *commandline);
 void		save_token(char *commandline, t_metadata **command, char **env);
 void		merge_token(t_metadata **command);
 
@@ -86,9 +89,10 @@ void		deal_with_append(t_metadata *cmd, int idx, int *change_cnt);
 void		deal_with_input(t_metadata *cmd, int idx, int *change_cnt);
 void		deal_with_heredoc(t_metadata *cmd, int idx,
 				int *change_cnt, t_exec *exec);
+void		deal_with_redirection(t_metadata *cmd, t_exec *exec);
 void		execute(t_metadata *cmd, char **env);
 
-int			check_builtin(t_metadata *command, char **env);
+int			check_builtin(t_metadata *command, char **env, t_exec *exec);
 
 /* builtin */
 void		builtin_cd(t_metadata *command, char **env);

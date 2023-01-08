@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:26:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 10:50:16 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 17:31:55 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	swap(int *a, int *b)
 
 static void	quicksort(char **env, int *index_rank, int left, int right)
 {
-	int		i;
-	int		j;
-	int		pivot;
+	int	i;
+	int	j;
+	int	pivot;
 
 	i = left;
 	j = right;
@@ -66,7 +66,9 @@ static void	print_env_in_export(int index, char **env)
 		}
 		else if (env[index][i] == 0)
 		{
-			write(STDOUT_FILENO, "\"\n", 2);
+			if (equal_flag)
+				write(STDOUT_FILENO, "\"", 1);
+			write(STDOUT_FILENO, "\n", 1);
 			break ;
 		}
 		else
@@ -78,26 +80,25 @@ static void	print_env_in_export(int index, char **env)
 void	print_sorted_env(char **env)
 {
 	int	env_count;
-	int	*index_rank;
-	int	index;
+	int	*rank;
+	int	rank_index;
 
 	env_count = 0;
 	while (env[env_count])
 		env_count++;
-	env_count--;
-	index_rank = (int *)malloc(sizeof(int) * env_count);
-	index = 0;
-	while (index < env_count)
+	rank = (int *)malloc(sizeof(int) * env_count);
+	rank_index = 0;
+	while (rank_index < env_count)
 	{
-		index_rank[index] = index;
-		index++;
+		rank[rank_index] = rank_index;
+		rank_index++;
 	}
-	quicksort(env, index_rank, 0, env_count - 1);
-	index = 0;
-	while (index < env_count)
+	quicksort(env, rank, 0, env_count - 1);
+	rank_index = 0;
+	while (rank_index < env_count)
 	{
-		print_env_in_export(index, env);
-		index++;
+		print_env_in_export(rank[rank_index], env);
+		rank_index++;
 	}
-	free(index_rank);
+	free(rank);
 }
