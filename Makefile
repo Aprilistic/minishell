@@ -6,7 +6,7 @@
 #    By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 13:34:29 by jinheo            #+#    #+#              #
-#    Updated: 2023/01/07 17:20:36 by jinheo           ###   ########.fr        #
+#    Updated: 2023/01/08 14:15:22 by jinheo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ LDFLAGS	= -L$(shell brew --prefix readline)/lib
 CPPFLAGS = -I$(shell brew --prefix readline)/include
 
 SRCS	= main.c read/read.c read/read_commandline.c \
-			read/token_0_allocation.c read/token_1_parsing.c \
-			read/token_2_env_replacing.c read/token_3_merging.c \
+			read/token_1_allocation.c read/token_2_parsing.c read/token_3_flag.c \
+			read/token_4_env_replacing.c read/token_5_merging.c \
 			signal/signal.c execute/command_classification.c \
 			execute/command_utils.c	env/search_env.c \
 			builtin/cd.c builtin/echo.c builtin/env.c builtin/exit.c \
