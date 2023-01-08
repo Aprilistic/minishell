@@ -64,7 +64,6 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 
 	if (check_builtin(cmd, env, exec))
 		exit(0);
-	// deal_with_redirection(cmd, exec);
 	path = getenv("PATH");
 	splited_path = ft_split(path, ':');
 	i = -1;

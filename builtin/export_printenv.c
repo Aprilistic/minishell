@@ -54,25 +54,25 @@ static void	print_env_in_export(int index, char **env)
 	int	equal_flag;
 	int	i;
 
-	write(STDOUT_FILENO, "declare -x ", 12);
+	printf("declare -x ");
 	equal_flag = 0;
 	i = 0;
 	while (1)
 	{
 		if (equal_flag == 0 && env[index][i] == '=')
 		{
-			write(STDOUT_FILENO, "=\"", 2);
+			printf("=\"");
 			equal_flag = 1;
 		}
 		else if (env[index][i] == 0)
 		{
 			if (equal_flag)
-				write(STDOUT_FILENO, "\"", 1);
-			write(STDOUT_FILENO, "\n", 1);
+				printf("\"");
+			printf("\n");
 			break ;
 		}
 		else
-			write(STDOUT_FILENO, env[index] + i, 1);
+			printf("%c", env[index][i]);
 		i++;
 	}
 }
