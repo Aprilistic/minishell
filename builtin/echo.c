@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 15:49:39 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 22:13:49 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 13:25:44 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,5 @@ void	builtin_echo(t_metadata *command)
 	}
 	if (!no_nl)
 		printf("\n");
-	exit(0);
+	g_exit_code = 0;
 }

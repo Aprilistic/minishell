@@ -6,39 +6,51 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 19:40:46 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 13:43:07 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+static void	update_path_env(char *old_pwd, char **env)
+{
+	char	*pwd;
+	char	*new_token;
+
+	pwd = getcwd(NULL, 0);
+	new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
+	modify_env(new_token, env);
+	free(new_token);
+	new_token = ft_strjoin(ft_strdup("PWD="), pwd);
+	modify_env(new_token, env);
+	free(new_token);
+	g_exit_code = 0;
+}
+
 static void	go_to_selected_directory(char *path, char **env)
 {
 	char	*old_pwd;
-	char	*pwd;
-	char	*new_token;
 
 	if (ft_strcmp(path, "-") == 0)
 	{
 		if (getenv("OLDPWD") == NULL)
-			exit(print_error(F_PROMPT, "cd", NULL, "OLDPWD not set"));
+		{
+			g_exit_code = print_error(F_PROMPT, "cd", NULL, "OLDPWD not set");
+			return ;
+		}
 		printf("%s\n", getenv("OLDPWD"));
 		go_to_selected_directory(getenv("OLDPWD"), env);
+		return ;
 	}
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(path))
 	{
 		free(old_pwd);
 		perror("미니쉘");
-		exit(1);
+		g_exit_code = 1;
+		return ;
 	}
-	pwd = getcwd(NULL, 0);
-	new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
-	modify_env(new_token, env);
-	free(new_token);
-	new_token = ft_strjoin(ft_strdup("PWD="), pwd);
-	free(new_token);
-	exit(0);
+	update_path_env(old_pwd, env);
 }
 
 static void	search_from_cdpath(char *path, char **env)
@@ -55,14 +67,15 @@ static void	go_to_home_directory(char **env)
 	if (env_index == ERROR)
 	{
 		print_error(F_PROMPT, "cd", NULL, "HOME not set");
-		exit(1);
+		g_exit_code = 1;
 	}
 	else if (ft_strchr(env[env_index], '=') == NULL)
 	{
 		print_error(F_PROMPT, "cd", NULL, "HOME not set");
-		exit(1);
+		g_exit_code = 1;
 	}
-	go_to_selected_directory(ft_strchr(env[env_index], '=') + 1, env);
+	else
+		go_to_selected_directory(ft_strchr(env[env_index], '=') + 1, env);
 }
 
 void	builtin_cd(t_metadata *command, char **env)
