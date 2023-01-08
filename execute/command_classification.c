@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 17:03:47 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 15:46:05 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
-	//if (cmd가 빌트인)
 	deal_with_redirection(cmd, exec);
+	if (check_builtin(cmd, env))
+		return ;
 	path = getenv("PATH");
 	splited_path = ft_split(path, ':');
 	i = -1;
@@ -71,16 +72,11 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 		cmd_file = ft_strjoin(splited_path[i], ft_strdup("/"));
 		cmd_file = ft_strjoin(cmd_file, ft_strdup(cmd->token[0]));
 		if (access(cmd_file, X_OK) == 0)
-		{
-			for (int i = 0; cmd->token[i]; i++)
-				printf("%s\n", cmd->token[i]);
 			execve(cmd_file, cmd->token, env);
-		}
 		free(cmd_file);
 	}
 	free(splited_path);
 	execve(cmd->token[0], cmd->token, env);
-	perror("");
 	exit(0);
 }
 
@@ -105,6 +101,9 @@ void	execute(t_metadata *cmd, char **env)
 	int		idx;
 	t_exec	exec;
 
+	//one command builtin exception
+	if (cmd[1].token == NULL && check_builtin(cmd, env))
+		return ;
 	exec_helper(&exec, 1);
 	idx = -1;
 	while (cmd[++idx].token != NULL)
@@ -125,6 +124,6 @@ void	execute(t_metadata *cmd, char **env)
 	}
 	while (idx--)
 		if (exec.pid == waitpid(-1, &exec.status, 0))
-			g_exit_code = exec.status;
+			g_exit_code = WEXITSTATUS(exec.status);
 	exec_helper(&exec, 0);
 }
