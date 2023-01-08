@@ -6,12 +6,11 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 14:21:32 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 20:25:28 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int	check_quote_flag(char *commandline)
 {

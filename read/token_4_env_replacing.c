@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:39:14 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 14:36:40 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 20:21:56 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static char	*ft_strndup(char *str, int size)
 {
 	char	*ret;
 
+	if (size == 0)
+		return (ft_strdup(""));
 	ret = (char *)malloc(sizeof(char) * (size + 1));
 	if (!ret)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 18:00:35 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 21:51:46 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ static void	go_to_selected_directory(char *path, char **env)
 
 	if (ft_strcmp(path, "-") == 0)
 	{
-		if (getenv("OLDPWD") == NULL)
+		if (search_from_environ("OLDPWD", env) == ERROR)
 		{
-			g_exit_code = print_error(F_PROMPT, "cd", NULL, "OLDPWD not set");
+			g_exit_code = print_error(E_PROMPT, "cd", NULL, "OLDPWD not set");
 			return ;
 		}
-		printf("%s\n", getenv("OLDPWD"));
-		go_to_selected_directory(getenv("OLDPWD"), env);
+		printf("%s\n", env[search_from_environ("OLDPWD", env)] + 7);
+		go_to_selected_directory(env[search_from_environ("OLDPWD", env)] + 7,
+			env);
 		return ;
 	}
 	old_pwd = getcwd(NULL, 0);
@@ -55,23 +56,32 @@ static void	go_to_selected_directory(char *path, char **env)
 
 static void	search_from_cdpath(char *path, char **env)
 {
-	chdir(getenv("CDPATH"));
-	go_to_selected_directory(path, env);
+	char	*final_path;
+
+	final_path
+		= ft_strjoin(ft_strdup(env[search_from_environ("CDPATH", env)] + 7),
+			ft_strdup("/"));
+	final_path = ft_strjoin(final_path, ft_strdup(path));
+	if (access(final_path, F_OK) == 0)
+		go_to_selected_directory(final_path, env);
+	else
+		go_to_selected_directory(path, env);
+	free(final_path);
 }
 
 static void	go_to_home_directory(char **env)
 {
-	int		env_index;
+	int	env_index;
 
 	env_index = search_from_environ("HOME", env);
 	if (env_index == ERROR)
 	{
-		print_error(F_PROMPT, "cd", NULL, "HOME not set");
+		print_error(E_PROMPT, "cd", NULL, "HOME not set");
 		g_exit_code = 1;
 	}
 	else if (ft_strchr(env[env_index], '=') == NULL)
 	{
-		print_error(F_PROMPT, "cd", NULL, "HOME not set");
+		print_error(E_PROMPT, "cd", NULL, "HOME not set");
 		g_exit_code = 1;
 	}
 	else
@@ -82,12 +92,13 @@ void	builtin_cd(t_metadata *command, char **env)
 {
 	if (command->token_count > 2)
 	{
-		print_error(F_PROMPT, "cd", NULL, "too many arguments");
+		print_error(E_PROMPT, "cd", NULL, "too many arguments");
 		g_exit_code = 1;
 	}
 	else if (command->token_count == 2)
 	{
-		if (command->token[1][0] != '/' && getenv("CDPATH"))
+		if (command->token[1][0] != '/' && search_from_environ("CDPATH",
+				env) != ERROR)
 			search_from_cdpath(command->token[1], env);
 		else
 			go_to_selected_directory(command->token[1], env);

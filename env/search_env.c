@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/31 18:19:33 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/06 15:43:02 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 20:16:35 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ char	*get_value_from_environ(char *key, char **env)
 	char	*value;
 	int		index;
 
-	if (key[1] == 0)
+	if (key[0] == 0)
+		value = ft_strdup("");
+	else if (key[1] == 0)
 		value = ft_strdup("$");
 	else if (key[1] == '?')
 		value = ft_itoa((unsigned short)g_exit_code);

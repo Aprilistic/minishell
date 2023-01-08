@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 17:27:14 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 21:28:06 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	modify_env(char *token, char **env)
 		return (1);
 	key = parse_key(token);
 	env_index = search_from_environ(key, env);
+	free(key);
 	if (env_index == ERROR)
 	{
 		env_index = 0;
@@ -90,7 +91,6 @@ int	modify_env(char *token, char **env)
 	}
 	else
 		env[env_index] = env_dict;
-	free(key);
 	return (0);
 }
 
@@ -103,7 +103,6 @@ int	put_env(t_metadata *command, char **env)
 	exit_status = 0;
 	while (token_index < command->token_count)
 	{
-		//possible memory leak
 		exit_status |= modify_env(command->token[token_index], env);
 		token_index++;
 	}
