@@ -6,14 +6,14 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 20:06:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 14:13:31 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 
-int	check_quote(char *commandline)
+int	check_quote_flag(char *commandline)
 {
 	int	ret;
 
@@ -25,7 +25,7 @@ int	check_quote(char *commandline)
 	return (ret);
 }
 
-int	check_merge(char *commandline)
+int	check_merge_flag(char *commandline)
 {
 	int ret;
 

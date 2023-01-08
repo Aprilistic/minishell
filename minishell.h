@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 18:49:42 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 14:13:12 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void		allocate_command_slot(char *commandline, t_metadata **command);
 void		allocate_t_metadata(t_metadata *command, int token_count);
 void		allocate_token_slot(char *commandline, t_metadata **command);
 void		replace_env_variable(char **token, char **env);
-int			check_quote(char *commandline);
-int			check_merge(char *commandline);
+int			check_quote_flag(char *commandline);
+int			check_merge_flag(char *commandline);
 
 /* signal */
 void		sigint_handler(int signum);

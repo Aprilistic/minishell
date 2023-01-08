@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 13:04:44 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/05 20:06:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/08 14:13:51 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ void	save_token(char *commandline, t_metadata **command, char **env)
 	{
 		if ((*commandline == '|' || *commandline == 0)
 			&& count_token(commandline, command, &command_index, &token_index))
-				break ;
+			break ;
 		else if (!ft_strchr("| \t\n", (int)*commandline))
 		{
 			(*command)[command_index].token_quote_flag[token_index]
-				= check_quote(commandline);
+				= check_quote_flag(commandline);
 			(*command)[command_index].token[token_index]
 				= get_current_token(commandline, env, check_quote(commandline));
 			commandline = skip_current_token(commandline);
 			(*command)[command_index].token_merge_flag[token_index]
-				= check_merge(commandline);
+				= check_merge_flag(commandline);
 			token_index++;
 		}
 		commandline++;
