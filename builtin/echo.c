@@ -51,12 +51,12 @@ void	builtin_echo(t_metadata *command)
 	}
 	while (index < command->token_count)
 	{
-		printf("%s", command->token[index]);
+		write(STDOUT_FILENO, command->token[index], ft_strlen(command->token[index]));
 		if (index != command->token_count - 1)
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		index++;
 	}
 	if (!no_nl)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	g_exit_code = 0;
 }
