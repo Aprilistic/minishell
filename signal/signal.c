@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:38:47 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 13:28:02 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 22:03:49 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ void	sigint_handler(int signum)
 
 void	handle_signal(void)
 {
-	struct sigaction	new_act;
+	struct sigaction	new_act[2];
 
-	new_act.sa_flags = 0;
-	sigemptyset(&new_act.sa_mask);
-	new_act.__sigaction_u.__sa_handler = sigint_handler;
-	sigaction(SIGINT, &new_act, NULL);
-	new_act.__sigaction_u.__sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &new_act, NULL);
+	new_act[0].sa_flags = 0;
+	sigemptyset(&new_act[0].sa_mask);
+	new_act[1].sa_flags = 0;
+	sigemptyset(&new_act[1].sa_mask);
+	new_act[0].__sigaction_u.__sa_handler = sigint_handler;
+	sigaction(SIGINT, &new_act[0], NULL);
+	new_act[1].__sigaction_u.__sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &new_act[1], NULL);
 }
 
 void	child_sigint_handler(int signum)

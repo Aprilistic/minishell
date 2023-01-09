@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 17:28:35 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 22:19:55 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
+	change_sigint();
 	if (check_builtin(cmd, env, exec))
 		exit(0);
 	if (search_from_environ("PATH", env) == ERROR)
@@ -93,6 +94,7 @@ void	exec_helper(t_exec *exec, int should_init)
 		exec->save[0] = dup(STDIN_FILENO);
 		exec->save[1] = dup(STDOUT_FILENO);
 		exec->idx = -1;
+		ignore_sigint();
 		return ;
 	}
 	dup2(exec->save[0], STDIN_FILENO);
@@ -115,9 +117,12 @@ void	execute(t_metadata *cmd, char **env)
 		exec.pid = fork();
 		if (exec.pid == 0)
 		{
-
 			if (cmd[exec.idx + 1].token != NULL)
+			{
+				close(exec.new_fd[0]);
 				dup2(exec.new_fd[1], STDOUT_FILENO);
+			}
+			close(exec.old_fd[1]);
 			dup2(exec.old_fd[0], STDIN_FILENO);
 			run_cmd(&cmd[exec.idx], &exec, env);
 		}
@@ -125,7 +130,6 @@ void	execute(t_metadata *cmd, char **env)
 		close(exec.old_fd[0]);
 		ft_memcpy(exec.old_fd, exec.new_fd, sizeof(int) * 2);
 	}
-	ignore_sigint();
 	while (exec.idx--)
 		if (exec.pid == waitpid(-1, &exec.status, 0))
 			g_exit_code = WEXITSTATUS(exec.status);
