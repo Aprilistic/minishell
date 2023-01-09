@@ -77,6 +77,8 @@ int			check_merge_flag(char *commandline);
 void		sigint_handler(int signum);
 void		handle_signal(void);
 void		change_sigint(void);
+void		ignore_sigint(void);
+void		child_sigint_handler(int signum);
 
 /* env */
 char		*get_key_from_environ(int index, char **env);

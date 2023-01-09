@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+// t_exec	exec;
+
 void	adjust_cmd(t_metadata *cmd, int change_cnt)
 {
 	int		i;
@@ -116,6 +118,7 @@ void	execute(t_metadata *cmd, char **env)
 		exec.pid = fork();
 		if (exec.pid == 0)
 		{
+			change_sigint();
 			if (cmd[exec.idx + 1].token != NULL)
 				dup2(exec.new_fd[1], STDOUT_FILENO);
 			dup2(exec.old_fd[0], STDIN_FILENO);
@@ -125,6 +128,7 @@ void	execute(t_metadata *cmd, char **env)
 		close(exec.old_fd[0]);
 		ft_memcpy(exec.old_fd, exec.new_fd, sizeof(int) * 2);
 	}
+	ignore_sigint();
 	while (exec.idx--)
 		if (exec.pid == waitpid(-1, &exec.status, 0))
 			g_exit_code = WEXITSTATUS(exec.status);

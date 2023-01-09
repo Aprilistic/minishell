@@ -79,9 +79,9 @@ int	main(int argc, char **argv, char **env)
 		write(STDERR_FILENO, "Seriously? We don't need argv. 들어가세요~\n", 49);
 		return (222);
 	}
-	handle_signal();
 	while (1)
 	{
+		handle_signal();
 		command = NULL;
 		
 		//parse input and execute

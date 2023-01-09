@@ -35,12 +35,29 @@ void	handle_signal(void)
 	sigaction(SIGQUIT, &new_act, NULL);
 }
 
+void	child_sigint_handler(int signum)
+{
+	signum = 0;
+	write(STDERR_FILENO, "\n", 5);
+	exit(130);
+}
+
 void	change_sigint(void)
 {
 	struct sigaction	new_act;
 
 	new_act.sa_flags = 0;
 	sigemptyset(&new_act.sa_mask);
-	new_act.__sigaction_u.__sa_handler = SIG_DFL;
+	new_act.__sigaction_u.__sa_handler = child_sigint_handler;
+	sigaction(SIGINT, &new_act, NULL);
+}
+
+void	ignore_sigint(void)
+{
+	struct sigaction	new_act;
+
+	new_act.sa_flags = 0;
+	sigemptyset(&new_act.sa_mask);
+	new_act.__sigaction_u.__sa_handler = SIG_IGN;
 	sigaction(SIGINT, &new_act, NULL);
 }
