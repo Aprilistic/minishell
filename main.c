@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 14:28:37 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 20:37:48 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,14 @@ int	main(int argc, char **argv, char **env)
 	{
 		handle_signal();
 		command = NULL;
-		
-		//parse input and execute
-		if (parse_input(&command, env) != ERROR)
+		if (parse_input(&command, env) == ERROR)
+		{
+			g_exit_code = 1;
+		}
+		else
 			execute(command, env);
+			
+		//parse input and execute
 
 		//retrieve_memory
 		retrieve_memory(&command);

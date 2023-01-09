@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 14:33:40 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 20:21:57 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_exec
 /* read */
 int			read_commandline(char **commandline);
 int			parse_input(t_metadata **command, char **env);
-int			check_syntax(char *commandline);
+int			check_syntax(t_metadata *command);
 void		save_token(char *commandline, t_metadata **command, char **env);
 void		merge_token(t_metadata **command);
 
