@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 14:26:17 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 17:31:55 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 15:53:36 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ static void	swap(int *a, int *b)
 
 static void	quicksort(char **env, int *index_rank, int left, int right)
 {
-	int	i;
-	int	j;
-	int	pivot;
+	int		i;
+	int		j;
+	char	*pivot;
 
 	i = left;
 	j = right;
-	pivot = (left + right) / 2;
+	pivot = env[index_rank[(left + right) / 2]];
 	while (i <= j)
 	{
-		while (ft_strcmp(env[index_rank[i]], env[index_rank[pivot]]) < 0)
+		while (ft_strcmp(env[index_rank[i]], pivot) < 0)
 			i++;
-		while (ft_strcmp(env[index_rank[j]], env[index_rank[pivot]]) > 0)
+		while (ft_strcmp(env[index_rank[j]], pivot) > 0)
 			j--;
 		if (i <= j)
 		{
