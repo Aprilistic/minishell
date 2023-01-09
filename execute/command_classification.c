@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 22:04:13 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 17:28:35 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,18 @@ void	deal_with_redirection(t_metadata *cmd, t_exec *exec)
 void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 {
 	int		i;
-	char	*path;
 	char	*cmd_file;
 	char	**splited_path;
 
 	change_sigint();
 	if (check_builtin(cmd, env, exec))
 		exit(0);
-	path = getenv("PATH");
-	splited_path = ft_split(path, ':');
+	if (search_from_environ("PATH", env) == ERROR)
+	{
+		print_error(E_PROMPT, NULL, cmd->token[0], "command not found");
+		exit(127);
+	}
+	splited_path = ft_split(env[search_from_environ("PATH", env)] + 5, ':');
 	i = -1;
 	while (splited_path[++i])
 	{
