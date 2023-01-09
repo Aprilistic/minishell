@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 16:54:18 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:32:50 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,23 @@ char	*skip_current_token(char *addr)
 	return (addr);
 }
 
+static int	empty_input_exception(char *commandline)
+{
+	while (*commandline == ' ' || *commandline == '\t' || *commandline == '\n')
+		commandline++;
+	if (*commandline == 0)
+		return (1);
+	return (0);
+}
+
 void	allocate_command_slot(char *commandline, t_metadata **command)
 {
 	int	command_count;
 
-	command_count = 1;
+	if (empty_input_exception(commandline))
+		command_count = 0;
+	else
+		command_count = 1;
 	while (*commandline)
 	{
 		if (*commandline == '|')
@@ -57,7 +69,7 @@ void	allocate_command_slot(char *commandline, t_metadata **command)
 	(*command)[command_count].token_count = 0;
 }
 
-void	allocate_t_metadata(t_metadata *command, int token_count)
+static void	allocate_t_metadata(t_metadata *command, int token_count)
 {
 	command->token_count = token_count;
 	command->token = ft_calloc(token_count + 1, sizeof(char *));
@@ -70,6 +82,8 @@ void	allocate_token_slot(char *commandline, t_metadata **command)
 	int	command_index;
 	int	token_index;
 
+	if (empty_input_exception(commandline))
+		return ;
 	command_index = 0;
 	token_index = 0;
 	while (1)
