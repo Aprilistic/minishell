@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:56:50 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 17:46:20 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/09 20:20:11 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ char	*skip_current_token(char *addr)
 		addr = ft_strchr(addr + 1, '\"');
 	else if (*addr == '<')
 	{
-		while (*addr == '<')
+		if (*(addr + 1) == '<')
 			addr++;
-		addr--;
 	}
 	else if (*addr == '>')
 	{
-		while (*addr == '>')
+		if (*(addr + 1) == '>')
 			addr++;
-		addr--;
 	}
 	else if (!ft_strchr("| \t\n\"\'<>", (int)*addr))
 	{
