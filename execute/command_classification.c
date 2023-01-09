@@ -12,8 +12,6 @@
 
 #include "../minishell.h"
 
-// t_exec	exec;
-
 void	adjust_cmd(t_metadata *cmd, int change_cnt)
 {
 	int		i;
@@ -63,7 +61,6 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
-	change_sigint();
 	if (check_builtin(cmd, env, exec))
 		exit(0);
 	if (search_from_environ("PATH", env) == ERROR)
@@ -118,7 +115,7 @@ void	execute(t_metadata *cmd, char **env)
 		exec.pid = fork();
 		if (exec.pid == 0)
 		{
-			change_sigint();
+
 			if (cmd[exec.idx + 1].token != NULL)
 				dup2(exec.new_fd[1], STDOUT_FILENO);
 			dup2(exec.old_fd[0], STDIN_FILENO);

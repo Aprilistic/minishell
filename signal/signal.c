@@ -38,7 +38,7 @@ void	handle_signal(void)
 void	child_sigint_handler(int signum)
 {
 	signum = 0;
-	write(STDERR_FILENO, "\n", 5);
+	write(STDERR_FILENO, "\n", 1);
 	exit(130);
 }
 
