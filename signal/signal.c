@@ -34,3 +34,13 @@ void	handle_signal(void)
 	new_act.__sigaction_u.__sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &new_act, NULL);
 }
+
+void	change_sigint(void)
+{
+	struct sigaction	new_act;
+
+	new_act.sa_flags = 0;
+	sigemptyset(&new_act.sa_mask);
+	new_act.__sigaction_u.__sa_handler = SIG_DFL;
+	sigaction(SIGINT, &new_act, NULL);
+}

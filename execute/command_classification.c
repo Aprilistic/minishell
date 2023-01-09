@@ -62,6 +62,7 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
+	change_sigint();
 	if (check_builtin(cmd, env, exec))
 		exit(0);
 	path = getenv("PATH");
@@ -103,7 +104,6 @@ void	execute(t_metadata *cmd, char **env)
 	t_exec	exec;
 
 	exec_helper(&exec, 1);
-	//one command builtin exception
 	if (!cmd[0].token || (!cmd[1].token && check_builtin(cmd, env, &exec)))
 		return (exec_helper(&exec, 0));
 	while (cmd[++exec.idx].token != NULL)
