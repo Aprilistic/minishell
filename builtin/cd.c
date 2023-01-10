@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 17:16:43 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:22:09 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	go_to_selected_directory(char *path, char **env)
 		}
 		printf("%s\n", env[search_from_environ("OLDPWD", env)] + 7);
 		go_to_selected_directory(env[search_from_environ("OLDPWD", env)] + 7,
-									env);
+			env);
 		return ;
 	}
 	old_pwd = getcwd(NULL, 0);
@@ -62,8 +62,7 @@ static void	search_from_cdpath(char *path, char **env)
 	char	*final_path;
 
 	final_path = ft_strjoin(ft_strdup(env[search_from_environ("CDPATH", env)]
-				+ 7),
-							ft_strdup("/"));
+				+ 7), ft_strdup("/"));
 	final_path = ft_strjoin(final_path, ft_strdup(path));
 	if (access(final_path, F_OK) == 0)
 		go_to_selected_directory(final_path, env);
