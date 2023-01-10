@@ -35,7 +35,7 @@ RM		= rm -rf
 all : 	
 			@make $(NAME)
 
-$(NAME) : $(SRC)
+$(NAME) : $(SRCS)
 			@make -C libft all
 			@echo "Compiling minishell..."
 			@make $(OBJS)
