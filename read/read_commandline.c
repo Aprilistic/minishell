@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:45:06 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/07 15:14:42 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:09:07 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int	handle_input_line(char **commandline, char *prompt)
 	{
 		if (read_again)
 		{
-			print_error(F_PROMPT, NULL, NULL, "예상치 못한 파일의 끝");
+			print_error(E_PROMPT, NULL, NULL,
+				"unexpected EOF while looking for matching `\"\'");
 			free(newline);
 			newline = readline(prompt);
 			free(newline);
