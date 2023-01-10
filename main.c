@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 11:09:17 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 13:40:39 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_metadata	*command;
 
-	// atexit(&leaks);
+	atexit(&leaks);
 	(void)argv;
 	if (argc != 1)
 	{

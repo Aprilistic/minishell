@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:38:47 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 10:58:52 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 13:48:15 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	sigint_handler(int signum)
 {
+	g_exit_code = 130;
 	if (signum != SIGINT)
 		return ;
 	printf("\n");
@@ -41,6 +42,7 @@ void	child_sigint_handler(int signum)
 {
 	signum = 0;
 	write(STDERR_FILENO, "\n", 1);
+	g_exit_code = 130;
 	exit(130);
 }
 
