@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 21:10:07 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:45:32 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char		*get_key_from_environ(int index, char **env);
 char		*get_value_from_environ(char *key, char **env);
 int			search_from_environ(char *token, char **env);
 void		allocate_env(char **env);
-void		free_env(char **env);
+int			free_env(char **env);
 
 /* execute */
 void		deal_with_output(t_metadata *cmd, int idx, int *change_cnt);

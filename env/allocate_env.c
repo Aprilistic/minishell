@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 20:35:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 20:36:53 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:45:17 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	allocate_env(char **env)
 	}
 }
 
-void	free_env(char **env)
+int	free_env(char **env)
 {
 	int	env_index;
 
@@ -34,4 +34,5 @@ void	free_env(char **env)
 		free(env[env_index]);
 		env_index++;
 	}
+	return (0);
 }
