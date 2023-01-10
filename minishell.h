@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 14:57:51 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 17:16:43 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # define ERROR -1
 # define HEREDOC_FILE "/tmp/.here_doc"
 
-# define F_PROMPT "미니쉘$ "
+# define F_PROMPT "M I N I S H E L L $ "
 # define S_PROMPT "> "
-# define E_PROMPT "미니쉘: "
+# define E_PROMPT "M I N I S H E L L : "
 
 int			g_exit_code;
 
