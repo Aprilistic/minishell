@@ -18,7 +18,7 @@ void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
-		return (perror(""));
+		return ;
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
@@ -34,7 +34,7 @@ void	deal_with_append(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (fd == -1)
-		return (perror(""));
+		return ;
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
@@ -50,7 +50,7 @@ void	deal_with_input(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_RDONLY);
 	if (fd == -1)
-		return (perror(""));
+		return ;
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	free(cmd->token[idx]);
@@ -72,7 +72,10 @@ void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt, t_exec *exec)
 	{
 		line = readline("> ");
 		if (!line || !ft_strcmp(line, cmd->token[idx + 1]))
+		{
+			free(line);
 			break ;
+		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);

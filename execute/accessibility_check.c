@@ -35,4 +35,5 @@ void	accessibility_check(char *path)
 		print_access_error(path);
 		exit(126);
 	}
+	exit(0);
 }
