@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:50:21 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 21:28:06 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:39:09 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ int	modify_env(char *token, char **env)
 		env[env_index + 1] = NULL;
 	}
 	else
-		env[env_index] = env_dict;
+	{
+		ft_memcpy(env[env_index], env_dict, ft_strlen(env_dict) + 1);
+		free(env_dict);
+	}
 	return (0);
 }
 

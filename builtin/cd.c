@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 21:51:46 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:37:21 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ static void	update_path_env(char *old_pwd, char **env)
 	char	*new_token;
 
 	pwd = getcwd(NULL, 0);
-	if (old_pwd == NULL)
-		new_token = ft_strjoin(ft_strdup("OLDPWD="), ft_strdup(""));
-	else
-		new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
+	new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
 	modify_env(new_token, env);
 	free(new_token);
 	new_token = ft_strjoin(ft_strdup("PWD="), pwd);
