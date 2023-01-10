@@ -23,8 +23,6 @@ void	accessibility_check(char *path)
 {
 	if (path == NULL)
 		exit(0);
-	if (*path == '<' || *path == '>')
-		exit(0);
 	if (access(path, F_OK))
 	{
 		print_error(E_PROMPT, NULL, path, "command not found");
