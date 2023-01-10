@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 11:29:20 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 13:29:53 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 		exit(0);
 	if (search_from_environ("PATH", env) == ERROR)
 	{
-		print_error(E_PROMPT, NULL, cmd->token[0], "command not found");
-		exit(127);
+		execve(cmd->token[0], cmd->token, env);
+		exit(accessibility_check(cmd->token[0]));
 	}
 	splited_path = ft_split(env[search_from_environ("PATH", env)] + 5, ':');
 	i = -1;
@@ -81,8 +81,7 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	}
 	free(splited_path);
 	execve(cmd->token[0], cmd->token, env);
-	print_error(E_PROMPT, NULL, cmd->token[0], "command not found");
-	exit(127);
+	exit(accessibility_check(cmd->token[0]));
 }
 
 void	exec_helper(t_exec *exec, int should_init)

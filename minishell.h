@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 20:21:57 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 13:27:53 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void		deal_with_redirection(t_metadata *cmd, t_exec *exec);
 void		execute(t_metadata *cmd, char **env);
 
 int			check_builtin(t_metadata *command, char **env, t_exec *exec);
+int			accessibility_check(char *path);
 
 /* builtin */
 void		builtin_cd(t_metadata *command, char **env);
