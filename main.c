@@ -6,16 +6,11 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 20:46:10 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 20:48:14 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void leaks(void)
-{
-	system("leaks minishell");
-}
 
 static void	retrieve_memory(t_metadata **command)
 {
@@ -41,7 +36,6 @@ static void	retrieve_memory(t_metadata **command)
 
 int	main(int argc, char **argv, char **env)
 {
-	atexit(&leaks);
 	t_metadata	*command;
 
 	(void)argv;
