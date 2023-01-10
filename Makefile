@@ -6,7 +6,7 @@
 #    By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/30 13:34:29 by jinheo            #+#    #+#              #
-#    Updated: 2023/01/10 13:28:03 by jinheo           ###   ########.fr        #
+#    Updated: 2023/01/10 20:43:04 by jinheo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS	= main.c read/read.c read/read_commandline.c \
 			builtin/cd.c builtin/echo.c builtin/env.c builtin/exit.c \
 			builtin/export.c builtin/export_addenv.c builtin/export_printenv.c \
 			builtin/pwd.c builtin/unset.c \
-			error/print_error.c
+			error/print_error.c env/allocate_env.c
 			
 OBJS	= $(SRCS:.c=.o)
 

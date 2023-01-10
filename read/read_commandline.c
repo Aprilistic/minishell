@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:45:06 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 17:09:07 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 20:40:44 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	check_pipe(char *newline, int *read_again)
 }
 
 // 0 : input ended, 1 : single-quote, 2 : double-quote
-static int	handle_input_line(char **commandline, char *prompt)
+static int	handle_input_line(char **commandline, char *prompt, char **env)
 {
 	char		*newline;
 	static int	read_again;
@@ -71,6 +71,7 @@ static int	handle_input_line(char **commandline, char *prompt)
 		}
 		else
 			printf("exit\n");
+		free_env(env);
 		exit(0);
 	}
 	check_quote(newline, &read_again);
@@ -81,14 +82,14 @@ static int	handle_input_line(char **commandline, char *prompt)
 	return (read_again);
 }
 
-int	read_commandline(char **commandline)
+int	read_commandline(char **commandline, char **env)
 {
 	int			read_again;
 
 	*commandline = ft_strdup("");
-	read_again = handle_input_line(commandline, F_PROMPT);
+	read_again = handle_input_line(commandline, F_PROMPT, env);
 	while (read_again)
-		read_again = handle_input_line(commandline, S_PROMPT);
+		read_again = handle_input_line(commandline, S_PROMPT, env);
 	if (*commandline[0] != '\0')
 		add_history(*commandline);
 	return (0);
