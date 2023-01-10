@@ -92,6 +92,7 @@ void		deal_with_input(t_metadata *cmd, int idx, int *change_cnt);
 void		deal_with_heredoc(t_metadata *cmd, int idx,
 				int *change_cnt, t_exec *exec);
 void		deal_with_redirection(t_metadata *cmd, t_exec *exec);
+void		exec_helper(t_exec *exec, int should_init);
 void		execute(t_metadata *cmd, char **env);
 
 int			check_builtin(t_metadata *command, char **env, t_exec *exec);

@@ -12,6 +12,24 @@
 
 #include "../minishell.h"
 
+void	exec_helper(t_exec *exec, int should_init)
+{
+	if (should_init)
+	{
+		exec->old_fd[0] = STDIN_FILENO;
+		exec->new_fd[1] = STDOUT_FILENO;
+		exec->save[0] = dup(STDIN_FILENO);
+		exec->save[1] = dup(STDOUT_FILENO);
+		exec->idx = -1;
+		ignore_sigint();
+		return ;
+	}
+	dup2(exec->save[0], STDIN_FILENO);
+	dup2(exec->save[1], STDOUT_FILENO);
+	close(exec->save[0]);
+	close(exec->save[1]);
+}
+
 void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 {
 	int	fd;
@@ -69,7 +87,8 @@ void	deal_with_input(t_metadata *cmd, int idx, int *change_cnt)
 	(*change_cnt) += 2;
 }
 
-void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt, t_exec *exec)
+void	deal_with_heredoc(t_metadata *cmd, int idx,
+	int *change_cnt, t_exec *exec)
 {
 	int		fd;
 	char	*line;
@@ -81,14 +100,12 @@ void	deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt, t_exec *exec)
 	{
 		line = readline("> ");
 		if (!line || !ft_strcmp(line, cmd->token[idx + 1]))
-		{
-			free(line);
 			break ;
-		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}
+	free(line);
 	close(fd);
 	fd = open(HEREDOC_FILE, O_CREAT | O_RDWR, 0644);
 	dup2(fd, STDIN_FILENO);

@@ -84,22 +84,31 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	accessibility_check(cmd->token[0]);
 }
 
-void	exec_helper(t_exec *exec, int should_init)
+void	execute_cmd(t_metadata *cmd, t_exec *exec, char **env)
 {
-	if (should_init)
+	while (cmd[++exec->idx].token != NULL)
 	{
-		exec->old_fd[0] = STDIN_FILENO;
-		exec->new_fd[1] = STDOUT_FILENO;
-		exec->save[0] = dup(STDIN_FILENO);
-		exec->save[1] = dup(STDOUT_FILENO);
-		exec->idx = -1;
-		ignore_sigint();
-		return ;
+		if (cmd[exec->idx + 1].token != NULL)
+			pipe(exec->new_fd);
+		exec->pid = fork();
+		if (exec->pid == 0)
+		{
+			if (cmd[exec->idx + 1].token != NULL)
+			{
+				close(exec->new_fd[0]);
+				dup2(exec->new_fd[1], STDOUT_FILENO);
+			}
+			close(exec->old_fd[1]);
+			dup2(exec->old_fd[0], STDIN_FILENO);
+			run_cmd(&cmd[exec->idx], exec, env);
+		}
+		close(exec->new_fd[1]);
+		close(exec->old_fd[0]);
+		ft_memcpy(exec->old_fd, exec->new_fd, sizeof(int) * 2);
 	}
-	dup2(exec->save[0], STDIN_FILENO);
-	dup2(exec->save[1], STDOUT_FILENO);
-	close(exec->save[0]);
-	close(exec->save[1]);
+	while (exec->idx--)
+		if (exec->pid == waitpid(-1, &exec->status, 0))
+			g_exit_code = WEXITSTATUS(exec->status);
 }
 
 void	execute(t_metadata *cmd, char **env)
@@ -109,28 +118,6 @@ void	execute(t_metadata *cmd, char **env)
 	exec_helper(&exec, 1);
 	if (!cmd[0].token || (!cmd[1].token && check_builtin(cmd, env, &exec)))
 		return (exec_helper(&exec, 0));
-	while (cmd[++exec.idx].token != NULL)
-	{
-		if (cmd[exec.idx + 1].token != NULL)
-			pipe(exec.new_fd);
-		exec.pid = fork();
-		if (exec.pid == 0)
-		{
-			if (cmd[exec.idx + 1].token != NULL)
-			{
-				close(exec.new_fd[0]);
-				dup2(exec.new_fd[1], STDOUT_FILENO);
-			}
-			close(exec.old_fd[1]);
-			dup2(exec.old_fd[0], STDIN_FILENO);
-			run_cmd(&cmd[exec.idx], &exec, env);
-		}
-		close(exec.new_fd[1]);
-		close(exec.old_fd[0]);
-		ft_memcpy(exec.old_fd, exec.new_fd, sizeof(int) * 2);
-	}
-	while (exec.idx--)
-		if (exec.pid == waitpid(-1, &exec.status, 0))
-			g_exit_code = WEXITSTATUS(exec.status);
+	execute_cmd(cmd, &exec, env);
 	exec_helper(&exec, 0);
 }
