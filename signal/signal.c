@@ -40,7 +40,8 @@ void	handle_signal(void)
 
 void	child_sigint_handler(int signum)
 {
-	signum = 0;
+	if (signum != SIGINT)
+		return ;
 	write(STDERR_FILENO, "\n", 1);
 	g_exit_code = 130;
 	exit(130);
