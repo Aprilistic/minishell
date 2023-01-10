@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 20:37:48 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 16:37:21 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:45:58 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ static void	update_path_env(char *old_pwd, char **env)
 	char	*pwd;
 	char	*new_token;
 
-	pwd = getcwd(NULL, 0);
+	if (old_pwd == NULL)
+		new_token = ft_strjoin(ft_strdup("OLDPWD="), ft_strdup(""));
+	else
+		new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
 	new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
 	modify_env(new_token, env);
 	free(new_token);
@@ -58,9 +61,8 @@ static void	search_from_cdpath(char *path, char **env)
 {
 	char	*final_path;
 
-	final_path
-		= ft_strjoin(ft_strdup(env[search_from_environ("CDPATH", env)] + 7),
-			ft_strdup("/"));
+	final_path = ft_strjoin(ft_strdup
+			(env[search_from_environ("CDPATH", env)] + 7), ft_strdup("/"));
 	final_path = ft_strjoin(final_path, ft_strdup(path));
 	if (access(final_path, F_OK) == 0)
 		go_to_selected_directory(final_path, env);
