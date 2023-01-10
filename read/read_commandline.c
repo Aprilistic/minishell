@@ -88,6 +88,7 @@ int	read_commandline(char **commandline)
 	read_again = handle_input_line(commandline, F_PROMPT);
 	while (read_again)
 		read_again = handle_input_line(commandline, S_PROMPT);
-	add_history(*commandline);
+	if (*commandline[0] != '\0')
+		add_history(*commandline);
 	return (0);
 }

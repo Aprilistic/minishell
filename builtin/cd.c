@@ -18,7 +18,10 @@ static void	update_path_env(char *old_pwd, char **env)
 	char	*new_token;
 
 	pwd = getcwd(NULL, 0);
-	new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
+	if (old_pwd == NULL)
+		new_token = ft_strjoin(ft_strdup("OLDPWD="), ft_strdup(""));
+	else
+		new_token = ft_strjoin(ft_strdup("OLDPWD="), old_pwd);
 	modify_env(new_token, env);
 	free(new_token);
 	new_token = ft_strjoin(ft_strdup("PWD="), pwd);
