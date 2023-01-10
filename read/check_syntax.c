@@ -6,16 +6,11 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 13:59:19 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 20:36:18 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 11:00:59 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// bash: syntax error near unexpected token `|’
-// bash: syntax error near unexpected token `>'
-// bash: syntax error near unexpected token `newline'
-
 
 static int	print_syntax_error(char *token)
 {

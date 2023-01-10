@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:27 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/09 22:01:53 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 11:09:17 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 	{
-		write(STDERR_FILENO, "Seriously? We don't need argv. 들어가세요~\n", 49);
+		write(STDERR_FILENO, "Seriously? We don't need argv. ", 32);
+		write(STDERR_FILENO, "Anyeonghigyeseyo~\n", 19);
 		return (222);
 	}
 	while (1)

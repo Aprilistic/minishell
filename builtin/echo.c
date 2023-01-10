@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 15:49:39 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/08 18:06:20 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 10:59:52 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	builtin_echo(t_metadata *command)
 	}
 	while (index < command->token_count)
 	{
-		write(STDOUT_FILENO, command->token[index], ft_strlen(command->token[index]));
+		write(STDOUT_FILENO, command->token[index],
+			ft_strlen(command->token[index]));
 		if (index != command->token_count - 1)
 			write(STDOUT_FILENO, " ", 1);
 		index++;
