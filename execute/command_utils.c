@@ -18,9 +18,12 @@ void	deal_with_output(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd == -1)
-		return ;
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+		perror("");
+	else
+	{
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 	free(cmd->token[idx]);
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
@@ -34,9 +37,12 @@ void	deal_with_append(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (fd == -1)
-		return ;
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+		perror("");
+	else
+	{
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 	free(cmd->token[idx]);
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;
@@ -50,9 +56,12 @@ void	deal_with_input(t_metadata *cmd, int idx, int *change_cnt)
 
 	fd = open(cmd->token[idx + 1], O_RDONLY);
 	if (fd == -1)
-		return ;
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+		perror("");
+	else
+	{
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
 	free(cmd->token[idx]);
 	free(cmd->token[idx + 1]);
 	cmd->token[idx] = NULL;

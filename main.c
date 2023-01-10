@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_metadata	*command;
 
-	// atexit(&leaks);
+	atexit(&leaks);
 	(void)argv;
 	if (argc != 1)
 	{
