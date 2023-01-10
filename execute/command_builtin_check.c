@@ -20,6 +20,8 @@ int	check_builtin(t_metadata *command, char **env, t_exec *exec)
 	deal_with_redirection(command, exec);
 	ret = 1;
 	token = command->token[0];
+	if (token == NULL)
+		return (0);
 	if (!ft_strcmp("cd", token))
 		builtin_cd(command, env);
 	else if (!ft_strcmp("echo", token))
