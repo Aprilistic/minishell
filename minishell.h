@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:30:55 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 20:40:51 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:10:07 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@
 
 int			g_exit_code;
 
-typedef enum e_command_type
-{
-	builtin,
-	redirection,
-	systemcall
-}			t_command_type;
-
 typedef struct s_metadata
 {
 	int		token_count;
@@ -56,7 +49,7 @@ typedef struct s_exec
 	int		save[2];
 	int		old_fd[2];
 	int		new_fd[2];
-}	t_exec;
+}			t_exec;
 
 /* read */
 int			read_commandline(char **commandline, char **env);
@@ -76,9 +69,9 @@ int			check_merge_flag(char *commandline);
 /* signal */
 void		sigint_handler(int signum);
 void		handle_signal(void);
-void		change_sigint(void);
+void		change_signal(void);
 void		ignore_sigint(void);
-void		child_sigint_handler(int signum);
+void		child_signal_handler(int signum);
 
 /* env */
 char		*get_key_from_environ(int index, char **env);
@@ -91,8 +84,8 @@ void		free_env(char **env);
 void		deal_with_output(t_metadata *cmd, int idx, int *change_cnt);
 void		deal_with_append(t_metadata *cmd, int idx, int *change_cnt);
 void		deal_with_input(t_metadata *cmd, int idx, int *change_cnt);
-void		deal_with_heredoc(t_metadata *cmd, int idx,
-				int *change_cnt, t_exec *exec);
+void		deal_with_heredoc(t_metadata *cmd, int idx, int *change_cnt,
+				t_exec *exec);
 void		deal_with_redirection(t_metadata *cmd, t_exec *exec);
 void		exec_helper(t_exec *exec, int should_init);
 void		execute(t_metadata *cmd, char **env);
@@ -114,7 +107,7 @@ int			modify_env(char *token, char **env);
 int			put_env(t_metadata *command, char **env);
 
 /* error */
-int			print_error(char *prompt, char *command,
-				char *token, char *message);
+int			print_error(char *prompt, char *command, char *token,
+				char *message);
 
 #endif

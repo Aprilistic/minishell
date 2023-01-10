@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 16:48:05 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 14:58:15 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:04:45 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	adjust_cmd(t_metadata *cmd, int change_cnt)
 	int		put_pos;
 	char	**new_token;
 
-	new_token
-		= (char **)malloc(sizeof(char *) * (cmd->token_count - change_cnt + 1));
+	new_token = (char **)malloc(sizeof(char *) * (cmd->token_count - change_cnt
+				+ 1));
 	new_token[cmd->token_count - change_cnt] = NULL;
 	put_pos = 0;
 	i = -1;
@@ -61,7 +61,7 @@ void	run_cmd(t_metadata *cmd, t_exec *exec, char **env)
 	char	*cmd_file;
 	char	**splited_path;
 
-	change_sigint();
+	change_signal();
 	if (check_builtin(cmd, env, exec))
 		exit(0);
 	if (search_from_environ("PATH", env) == ERROR)

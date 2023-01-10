@@ -6,7 +6,7 @@
 /*   By: jinheo <jinheo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:38:47 by jinheo            #+#    #+#             */
-/*   Updated: 2023/01/10 13:48:15 by jinheo           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:15:33 by jinheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,25 @@ void	handle_signal(void)
 	sigaction(SIGQUIT, &new_act, NULL);
 }
 
-void	child_sigint_handler(int signum)
+void	child_signal_handler(int signum)
 {
-	if (signum != SIGINT)
+	if (signum != SIGINT && signum != SIGQUIT)
 		return ;
-	write(STDERR_FILENO, "\n", 1);
 	g_exit_code = 130;
+	write(STDERR_FILENO, "\n", 1);
 	exit(130);
 }
 
-void	change_sigint(void)
+void	change_signal(void)
 {
 	struct sigaction	new_act;
 
 	new_act.sa_flags = 0;
 	sigemptyset(&new_act.sa_mask);
-	new_act.__sigaction_u.__sa_handler = child_sigint_handler;
+	new_act.__sigaction_u.__sa_handler = child_signal_handler;
 	sigaction(SIGINT, &new_act, NULL);
+	new_act.__sigaction_u.__sa_handler = child_signal_handler;
+	sigaction(SIGQUIT, &new_act, NULL);
 }
 
 void	ignore_sigint(void)
