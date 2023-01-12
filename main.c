@@ -34,16 +34,10 @@ static void	retrieve_memory(t_metadata **command)
 	free((*command));
 }
 
-void	leaks(void)
-{
-	system("leaks minishell");
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_metadata	*command;
 
-	atexit(leaks);
 	(void)argv;
 	if (argc != 1)
 	{
